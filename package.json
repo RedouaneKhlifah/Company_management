@@ -1,6 +1,6 @@
 {
   "name": "anep",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Design and development of a continuous training management platform within ANEP.",
   "main": "server.js",
   "type": "module",
@@ -28,6 +28,7 @@
     "mongoose": "^7.2.4"
   },
   "devDependencies": {
+    "concurrently": "^8.2.0",
     "eslint": "^8.42.0",
     "eslint-config-semistandard": "^17.0.0",
     "eslint-config-standard": "^17.1.0",

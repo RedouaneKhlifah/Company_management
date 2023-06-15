@@ -10,6 +10,7 @@ module.exports = {
         indent: ["warn", 4],
         "no-unused-vars": ["warn"],
         "prefer-const": ["warn"],
-        quotes: ["warn", "double"]
+        quotes: ["warn", "double"],
+        "comma-dangle": ["off"]
     }
 };
