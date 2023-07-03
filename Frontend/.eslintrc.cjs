@@ -19,6 +19,7 @@ module.exports = {
         "no-unused-vars": ["warn"],
         "prefer-const": ["warn"],
         quotes: ["warn", "double"],
-        "comma-dangle": ["off"]
+        "comma-dangle": ["off"],
+        "multiline-ternary": ["off"]
     }
 };
