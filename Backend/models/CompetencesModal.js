@@ -1,20 +1,19 @@
 import mongoose from "mongoose";
 
-const CompetenceSchema = mongoose.Schema({
-    titre: {
-        type: String,
-        required: [true, "please fill the titre"]
+const CompetenceSchema = mongoose.Schema(
+    {
+        titre: {
+            type: String,
+            required: [true, "please fill the titre"]
+        },
+        type_de_savoire: {
+            type: String,
+            required: [true, "please choose the a type"]
+        }
     },
-    type_de_savoire: {
-        titre: String,
-        required: [true, "please choose the a type"]
-    },
-    module_id: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "model"
-    }
-});
+    { strict: false }
+);
 
-const Competence = mongoose.model("Competence", CompetenceSchema);
+const Competence = mongoose.model("competences", CompetenceSchema);
 
 export default Competence;

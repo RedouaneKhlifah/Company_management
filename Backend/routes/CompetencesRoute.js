@@ -1,8 +1,25 @@
-import { fetchCompetence } from "../controllers/competencesController";
+import {
+    fetchCompetences,
+    fetchOneCompetence,
+    createCompetence,
+    updateCompetence,
+    deleteCompetence
+} from "../controllers/competencesController.js";
 import { Router } from "express";
 
 const router = Router();
 
-router.get("/", fetchCompetence);
+// @GET
+router.get("/", fetchCompetences);
+router.get("/:id", fetchOneCompetence);
+
+// @POST
+router.post("/", createCompetence);
+
+// @PATCH
+router.patch("/:id", updateCompetence);
+
+// @ Delete
+router.delete("/:id", deleteCompetence);
 
 export { router as CompetencesRoute };
