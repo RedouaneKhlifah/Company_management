@@ -1,10 +1,10 @@
 import express from "express";
 import {
-  createEmploi,
-  fetchEmplois,
-  updateEmploi,
-  deleteEmploi,
-} from "../controllers/emploisController.js";
+    createEmploi,
+    fetchEmplois,
+    updateEmploi,
+    deleteEmploi
+} from "../controllers/EmploisController.js";
 
 const router = express.Router();
 

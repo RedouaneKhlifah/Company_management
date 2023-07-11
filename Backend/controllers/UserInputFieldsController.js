@@ -5,6 +5,4 @@ import asyncHandler from "express-async-handler";
  * @route POST /api/user-input-fields
  * @access private
  */
-export const createUserInputField = asyncHandler(async (req, res) => {
-    
-});
+export const createUserInputField = asyncHandler(async (req, res) => {});
