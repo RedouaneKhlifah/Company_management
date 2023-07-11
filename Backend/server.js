@@ -2,6 +2,8 @@ import express from "express";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import connectDB from "./config/Db.js";
+import UserRoutes from "./routes/UserRoutes.js";
+import UserInputField from "./routes/UserInputFieldRouters.js";
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 
 dotenv.config();
@@ -20,6 +22,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Routes
+app.use("/api/user", UserRoutes);
+app.use("/api/user-input-fields", UserInputField);
 
 // Middlewares
 app.use(notFound);
