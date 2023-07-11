@@ -22,4 +22,4 @@ router.patch("/:id", updateCompetence);
 // @ Delete
 router.delete("/:id", deleteCompetence);
 
-export { router as CompetencesRoute };
+export default router;
