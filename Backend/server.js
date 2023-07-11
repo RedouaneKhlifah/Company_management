@@ -16,7 +16,7 @@ const port = process.env.PORT || 5000;
 const app = express();
 
 
-app.use('/api/emploi', emploiRoute);
+
 
 // Using the cookie-parser middleware to parse cookies from incoming requests
 app.use(cookieParser());
@@ -28,7 +28,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Routes
-
+app.use('/emplois', emploiRoute);
 // Middlewares
 app.use(notFound);
 app.use(errorHandler);
