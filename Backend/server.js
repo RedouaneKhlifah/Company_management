@@ -3,12 +3,8 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import connectDB from "./config/Db.js";
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
-
-
-// imported routes
 import CompetencesRoute from "./routes/CompetencesRoute.js";
 import emploiRoute from "./routes/emploiRoute.js";
-
 
 dotenv.config();
 connectDb();
