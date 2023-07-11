@@ -9,6 +9,10 @@ const CompetenceSchema = mongoose.Schema(
         type_de_savoire: {
             type: String,
             required: [true, "please choose the a type"]
+        },
+        module_id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "modules"
         }
     },
     { strict: false }

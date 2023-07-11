@@ -4,8 +4,8 @@ import cookieParser from "cookie-parser";
 import connectDb from "./config/db.js";
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 
-//imported routes
-import { CompetencesRoute } from "./routes/CompetencesRoute.js";
+// imported routes
+import CompetencesRoute from "./routes/CompetencesRoute.js";
 
 dotenv.config();
 connectDb();
@@ -24,7 +24,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Routes
-app.use('/Competences',CompetencesRoute)
+app.use("/api/competences", CompetencesRoute);
 // Middlewares
 app.use(notFound);
 app.use(errorHandler);
