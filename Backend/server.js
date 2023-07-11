@@ -1,17 +1,19 @@
 import express from "express";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
-import connectDb from "./config/db.js";
+import connectDB from "./config/Db.js";
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
+
 
 // imported routes
 import CompetencesRoute from "./routes/CompetencesRoute.js";
+import emploiRoute from "./routes/emploiRoute.js";
+
 
 dotenv.config();
 connectDb();
 
 const port = process.env.PORT || 5000;
-
 const app = express();
 
 // Using the cookie-parser middleware to parse cookies from incoming requests
@@ -25,6 +27,8 @@ app.use(express.urlencoded({ extended: true }));
 
 // Routes
 app.use("/api/competences", CompetencesRoute);
+app.use('/api/emplois', emploiRoute);
+
 // Middlewares
 app.use(notFound);
 app.use(errorHandler);
