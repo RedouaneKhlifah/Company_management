@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const CompetenceSchema = mongoose.Schema(
+const CompetencesSchema = mongoose.Schema(
     {
         titre: {
             type: String,
@@ -9,15 +9,11 @@ const CompetenceSchema = mongoose.Schema(
         type_de_savoire: {
             type: String,
             required: [true, "please choose the a type"]
-        },
-        module_id: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "modules"
         }
     },
     { strict: false }
 );
 
-const Competence = mongoose.model("competences", CompetenceSchema);
+const Competence = mongoose.model("competences", CompetencesSchema);
 
 export default Competence;
