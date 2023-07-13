@@ -1,17 +1,17 @@
 import {
     fetchCompetences,
-    fetchOneCompetence,
+    fetchCompetenceById,
     createCompetence,
     updateCompetence,
     deleteCompetence
-} from "../controllers/competencesController.js";
+} from "../controllers/CompetenceController.js";
 import { Router } from "express";
 
 const router = Router();
 
 // @GET
 router.get("/", fetchCompetences);
-router.get("/:id", fetchOneCompetence);
+router.get("/:id", fetchCompetenceById);
 
 // @POST
 router.post("/", createCompetence);
@@ -19,7 +19,7 @@ router.post("/", createCompetence);
 // @PATCH
 router.patch("/:id", updateCompetence);
 
-// @ Delete
+// @Delete
 router.delete("/:id", deleteCompetence);
 
 export default router;
