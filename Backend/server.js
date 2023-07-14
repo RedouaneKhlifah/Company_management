@@ -4,12 +4,10 @@ import cookieParser from "cookie-parser";
 import connectDB from "./config/Db.js";
 import UserRoutes from "./routes/UserRoutes.js";
 import UserInputField from "./routes/UserInputFieldRoutes.js";
-import EmploiRoute from "./routes/EmploiRoutes.js";
-import CompetenceRoute from "./routes/CompetenceRoute.js";
-import ModuleRoute from "./routes/ModuleRoute.js";
+import EmploiRoutes from "./routes/EmploiRoutes.js";
+import CompetenceRoutes from "./routes/CompetenceRoutes.js";
+import ModuleRoutes from "./routes/ModuleRoutes.js";
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
-
-
 
 dotenv.config();
 connectDB();
@@ -27,12 +25,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Routes
-
-app.use("/api/competence", CompetenceRoute);
-app.use("/api/module", ModuleRoute);
 app.use("/api/user", UserRoutes);
 app.use("/api/user-input-fields", UserInputField);
-app.use("/api/emplois", EmploiRoute);
+app.use("/api/emplois", EmploiRoutes);
+app.use("/api/competence", CompetenceRoutes);
+app.use("/api/module", ModuleRoutes);
 
 // Middlewares
 app.use(notFound);

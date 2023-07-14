@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import asynchandler from "express-async-handler";
-import Competence from "../models/CompetenceModal.js";
-import Module from "../models/moduleModal.js";
+import Competence from "../models/CompetenceModel.js";
+import Module from "../models/ModuleModel.js";
 
 // Get all Competences
 const fetchCompetences = asynchandler(async (req, res) => {
