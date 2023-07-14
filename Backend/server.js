@@ -3,8 +3,8 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import connectDb from "./config/db.js";
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
-import CompetenceRoute from "./routes/CompetenceRoute.js";
-import ModuleRoute from "./routes/ModuleRoute.js";
+import CompetenceRoutes from "./routes/CompetenceRoutes.js";
+import ModuleRoutes from "./routes/ModuleRoutes.js";
 
 dotenv.config();
 connectDb();
@@ -23,8 +23,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Routes
-app.use("/api/competence", CompetenceRoute);
-app.use("/api/module", ModuleRoute);
+app.use("/api/competence", CompetenceRoutes);
+app.use("/api/module", ModuleRoutes);
 
 // Middlewares
 app.use(notFound);
