@@ -1,10 +1,6 @@
 module.exports = {
-    extends: [
-        "semistandard"
-    ],
-    plugins: [
-        "only-warn"
-    ],
+    extends: ["semistandard"],
+    plugins: ["only-warn"],
     rules: {
         semi: ["warn", "always"],
         indent: ["warn", 4],
@@ -12,6 +8,7 @@ module.exports = {
         "prefer-const": ["warn"],
         quotes: ["warn", "double"],
         "comma-dangle": ["off"],
-        "multiline-ternary": ["off"]
+        "multiline-ternary": ["off"],
+        camelcase: ["off"]
     }
 };
