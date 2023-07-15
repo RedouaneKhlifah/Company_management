@@ -2,107 +2,131 @@ import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 
 // Creating a new schema for users using mongoose
-const userSchema = mongoose.Schema({
-    user_type: {
-        type: Number,
-        default: 2
-    },
-    info_personelle: {
-        Nom: {
-            type: String,
-            trim: true,
-            require: true
-        },
-        Prénom: {
-            type: String,
-            trim: true,
-            require: true
-        },
-        full_name: {
-            type: String,
-            trim: true,
-        },
-        Téléphone: {
-            type: String,
-            trim: true
-        },
-        "E-mail": {
-            type: String,
-            require: true,
-            trim: true,
-            unique: true
-        },
+const userSchema = mongoose.Schema(
+    {
         password: {
             type: String,
-            require: true
-        }
-    },
-    info_pro: {
-        Direction: {
-            type: String,
-            trim: true,
-            require: true
+            required: true
         },
-        Catégorie: {
-            type: String,
-            trim: true,
-            require: true
-        },
-        Formation: {
-            type: String,
-            trim: true,
-            require: true
-        },
-        Spécialité: {
-            type: String,
-            trim: true,
-            require: true
-        },
-        "Expérience extérieure": {
-            type: Number,
-            trim: true,
-            require: true
-        },
-        "Expérience intérieure": {
-            type: Date,
-            trim: true,
-            require: true
-        },
-        "Service extérieur": {
-            type: String,
-            trim: true,
-            require: true
-        }
-    },
-    Compétences: [
-        {
-            Emploi: {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "emplois",
-                require: true
+        otherInfo: {
+            // 1 == Admin
+            userType: {
+                type: Number,
+                default: 2
             },
-            Compétence: [
-                {
-                    competence_id: {
-                        type: mongoose.Schema.Types.ObjectId,
-                        ref: "competences",
-                        require: true
-                    },
-                    Niveau: {
-                        type: Number,
-                        trim: true,
-                        require: true
-                    }
+            fullName: {
+                type: String,
+                trim: true
+            },
+            profilePicture: {
+                data: Buffer,
+                contentType: String
+            }
+        },
+        personalInfo: {
+            Nom: {
+                type: String,
+                trim: true,
+                required: true
+            },
+            Prénom: {
+                type: String,
+                trim: true,
+                required: true
+            },
+            Téléphone: {
+                type: String,
+                trim: true
+            },
+            "E-mail personnel": {
+                type: String,
+                required: true,
+                trim: true,
+                unique: true
+            },
+            "E-mail professionnel": {
+                type: String,
+                required: true,
+                trim: true,
+                unique: true
+            }
+        },
+        professionalInfo: {
+            Direction: {
+                type: String,
+                trim: true,
+                required: true
+            },
+            Catégorie: {
+                type: String,
+                trim: true,
+                required: true
+            },
+            Formation: {
+                type: String,
+                trim: true,
+                required: true
+            },
+            Spécialité: {
+                type: String,
+                trim: true,
+                required: true
+            },
+            "Expérience antérieure": {
+                type: Number,
+                trim: true,
+                required: true
+            },
+            "Expérience à l'ANEP": {
+                type: Date,
+                trim: true,
+                required: true
+            },
+            "Service extérieur": {
+                type: String,
+                trim: true,
+                required: true
+            }
+        },
+        skills: [
+            {
+                competence_id: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: "competences",
+                    required: true
+                },
+                title: {
+                    type: String,
+                    required: true
+                },
+                Niveau: {
+                    type: Number,
+                    trim: true,
+                    required: true
                 }
-            ]
-        }
-    ]
-}, {
-    // Adding timestamps to the schema to track when documents are created and updated
-    timestamps: true,
-    // Allow fields not defined in the schema to be saved to the database
-    strict: false
-});
+            }
+        ],
+        jobs: [
+            {
+                emploi_id: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: "emplois",
+                    required: true
+                },
+                title: {
+                    type: String,
+                    required: true
+                }
+            }
+        ]
+    },
+    {
+        // Adding timestamps to the schema to track when documents are created and updated
+        timestamps: true,
+        // Allow fields not defined in the schema to be saved to the database
+        strict: false
+    }
+);
 
 // Using a pre-save hook to hash the user's password before saving it to the database
 userSchema.pre("save", async function (next) {
