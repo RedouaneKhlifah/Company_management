@@ -14,6 +14,6 @@ const CompetencesSchema = mongoose.Schema(
     { strict: false }
 );
 
-const Competence = mongoose.model("competences", CompetencesSchema);
+const Competence = mongoose.model("competence", CompetencesSchema);
 
 export default Competence;

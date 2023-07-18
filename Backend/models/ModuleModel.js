@@ -13,6 +13,6 @@ const ModuleSchema = mongoose.Schema(
     { strict: false }
 );
 
-const Module = mongoose.model("Module", ModuleSchema);
+const Module = mongoose.model("module", ModuleSchema);
 
 export default Module;
