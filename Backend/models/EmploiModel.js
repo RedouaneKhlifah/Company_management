@@ -2,22 +2,53 @@ import mongoose from "mongoose";
 
 const emploiSchema = mongoose.Schema(
     {
-        Formation: {
-            type: String,
-            trim: true,
-            required: true
+        info_emploi: {
+            Formation: {
+                type: String,
+                trim: true,
+                required: true
+            },
+            Spécialité: {
+                type: String,
+                trim: true,
+                required: true
+            },
+            Expérience: {
+                type: String,
+                trim: true,
+                required: true
+            }
         },
-        Specialite: {
-            type: String,
-            trim: true,
-            required: true
+        Compétences: [
+            {
+                competence_id: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: "Competence"
+                },
+                Titre: {
+                    type: String,
+                    required: true
+                },
+                "Type de savoire": {
+                    type: String,
+                    required: true
+                },
+                Niveau: {
+                    type: Number,
+                    required: true
+                }
+            }
+        ],
+        createdBy: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User"
         },
-        Experience: {
-            type: String,
-            trim: true,
-            required: true
+        updatedBy: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User"
         }
     },
+
     {
         timestamps: true,
         strict: false

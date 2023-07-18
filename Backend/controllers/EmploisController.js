@@ -1,55 +1,61 @@
 import asyncHandler from "express-async-handler";
 import Emploi from "../models/EmploiModel.js";
 
-// CREATE operation
+// @desc    Create a new emploi
+// @route   POST /api/emplois
+// @access  Public
 const createEmploi = asyncHandler(async (req, res) => {
-    const { Formation, Specialite, Experience } = req.body;
-    console.log("Request Body:", req.body);
-    const newEmploi = new Emploi({ Formation, Specialite, Experience });
-    const savedEmploi = await newEmploi.save();
-    res.status(201).json(savedEmploi);
+    console.log(req.body);
+    const emploiData = req.body;
+    const newEmploi = await Emploi.create(emploiData);
+    res.status(201).json(newEmploi);
 });
 
-// READ operation
-const fetchEmplois = asyncHandler(async (req, res) => {
+// @desc    Get all emplois
+// @route   GET /api/emplois
+// @access  Public
+const fetchAllEmplois = asyncHandler(async (req, res) => {
     const emplois = await Emploi.find();
     res.status(200).json(emplois);
 });
 
-// READ operation - Fetch a single emploi
-const fetchEmploi = asyncHandler(async (req, res) => {
-    const emploiId = req.params.id; // Assuming the employment record ID is passed as a parameter in the request
-
-    try {
-        const emploi = await Emploi.findById(emploiId);
-
-        if (!emploi) {
-            return res
-                .status(404)
-                .json({ error: "Employment record not found" });
-        }
-
+// @desc    Get a single emploi by ID
+// @route   GET /api/emplois/:id
+// @access  Public
+const fetchSingleEmploi = asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const emploi = await Emploi.findById(id);
+    if (emploi) {
         res.status(200).json(emploi);
-    } catch (error) {
-        res.status(500).json({ error: "Server error" });
+    } else {
+        res.status(404).json({ message: "Emploi not found" });
     }
 });
 
-// UPDATE operation
+// @desc    Update an emploi by ID
+// @route   PUT /api/emplois/:id
+// @access  Public
 const updateEmploi = asyncHandler(async (req, res) => {
-    const { Formation, Specialite, Experience } = req.body;
-    const updatedEmploi = await Emploi.findByIdAndUpdate(
-        req.params.id,
-        { Formation, Specialite, Experience },
-        { new: true }
-    );
+    const { id } = req.params;
+    const updatedEmploi = await Emploi.findByIdAndUpdate(id, req.body, {
+        new: true
+    });
     res.status(200).json(updatedEmploi);
 });
 
-// DELETE operation
+// @desc    Delete an emploi by ID
+// @route   DELETE /api/emplois/:id
+// @access  Public
 const deleteEmploi = asyncHandler(async (req, res) => {
-    const deletedEmploi = await Emploi.findByIdAndRemove(req.params.id);
-    res.status(200).json(deletedEmploi);
+    const { id } = req.params;
+    await Emploi.findByIdAndDelete(id);
+    res.status(200).json({ message: "Emploi deleted successfully" });
 });
 
-export { createEmploi, fetchEmplois, updateEmploi, deleteEmploi };
+export {
+    createEmploi,
+    fetchAllEmplois,
+    fetchSingleEmploi,
+    updateEmploi,
+    deleteEmploi
+};
