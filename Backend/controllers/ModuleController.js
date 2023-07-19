@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import Module from "../models/moduleModal.js";
+import Module from "../models/ModuleModel.js";
 import asynchandler from "express-async-handler";
 
 // get all modules
