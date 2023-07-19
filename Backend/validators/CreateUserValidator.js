@@ -1,6 +1,15 @@
+import fs from "fs";
 import { body, validationResult } from "express-validator";
 
 export const adminCreateUserValidationRules = [
+    body("personalInfo.name")
+        .trim()
+        .notEmpty()
+        .withMessage("Ce champ ne peut pas être vide."),
+    body("personalInfo.familyName")
+        .trim()
+        .notEmpty()
+        .withMessage("Ce champ ne peut pas être vide."),
     body("personalInfo.*")
         .trim()
         .notEmpty()
@@ -24,13 +33,27 @@ export const adminCreateUserValidationRules = [
     body("professionalInfo.anepExp")
         .isDate()
         .withMessage("L'expérience à l'ANEP n'accepte qu'une date."),
-    body("skills").isJSON().withMessage("Les compétences sont invalides."),
-    body("jobs").isJSON().withMessage("Les emplois sont invalides."),
+    body("skills")
+        .optional({ checkFalsy: true })
+        .isJSON()
+        .withMessage("Les compétences sont invalides."),
+    body("jobs")
+        .optional({ checkFalsy: true })
+        .isJSON()
+        .withMessage("Les emplois sont invalides."),
     (req, res, next) => {
         const errors = validationResult(req);
 
         if (!errors.isEmpty()) {
             const extractedErrors = {};
+
+            if (req.file) {
+                fs.unlink(req.file.path, (err) => {
+                    err
+                        ? console.log("Error occurred : " + err)
+                        : console.log("File deleted due to an error.");
+                });
+            }
 
             errors.array().forEach((err) => {
                 const keys = err.path.split(".");
@@ -47,7 +70,7 @@ export const adminCreateUserValidationRules = [
 
             return res.status(422).json({ errors: extractedErrors });
         } else {
-            return next();
+            next();
         }
     }
 ];

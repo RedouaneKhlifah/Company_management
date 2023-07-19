@@ -24,6 +24,6 @@ const emploiSchema = mongoose.Schema(
     }
 );
 
-const Emploi = mongoose.model("Emploi", emploiSchema);
+const Emploi = mongoose.model("emploi", emploiSchema);
 
 export default Emploi;

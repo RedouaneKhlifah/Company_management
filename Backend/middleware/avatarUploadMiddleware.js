@@ -3,7 +3,7 @@ import path from "path";
 import { v1 as uuidv1 } from "uuid";
 
 const avatarUpload = multer({
-    limits: 2097152, // maximum of 2Mb
+    limits: 2 * 1024 * 1024, // maximum of 2Mb
     storage: multer.diskStorage({
         destination: (req, file, cb) => {
             cb(null, "Backend/storage/avatar");
