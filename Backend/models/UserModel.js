@@ -9,10 +9,16 @@ const userSchema = mongoose.Schema(
             required: true
         },
         otherInfo: {
-            // 1 == Admin
             userType: {
                 type: Number,
-                default: 2
+                default: 5
+                /**
+                 * 1 == Super Admin
+                 * 2 == Admin
+                 * 3 == Read-only Admin
+                 * 4 == Trainer (Formateur)
+                 * 5 == Employee
+                 */
             },
             fullName: {
                 type: String,
@@ -20,7 +26,8 @@ const userSchema = mongoose.Schema(
             },
             profilePicture: {
                 data: Buffer,
-                contentType: String
+                contentType: String,
+                type: String,
             }
         },
         personalInfo: {
@@ -92,11 +99,7 @@ const userSchema = mongoose.Schema(
             {
                 competence_id: {
                     type: mongoose.Schema.Types.ObjectId,
-                    ref: "competences",
-                    required: true
-                },
-                title: {
-                    type: String,
+                    ref: "competence",
                     required: true
                 },
                 Niveau: {
@@ -110,19 +113,31 @@ const userSchema = mongoose.Schema(
             {
                 emploi_id: {
                     type: mongoose.Schema.Types.ObjectId,
-                    ref: "emplois",
-                    required: true
-                },
-                title: {
-                    type: String,
+                    ref: "emploi",
                     required: true
                 }
             }
-        ]
+        ],
+        history: {
+            createdBy: {
+                user_id: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: "personne"
+                },
+                timestamp: Date,
+            },
+            updatedBy: [
+                {
+                    user_id: {
+                        type: mongoose.Schema.Types.ObjectId,
+                        ref: "personne"
+                    },
+                    timestamp: Date,
+                }
+            ]
+        }
     },
     {
-        // Adding timestamps to the schema to track when documents are created and updated
-        timestamps: true,
         // Allow fields not defined in the schema to be saved to the database
         strict: false
     }
