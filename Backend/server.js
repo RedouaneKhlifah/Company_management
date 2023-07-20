@@ -2,7 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import connectDB from "./config/Db.js";
-import UserRoutes from "./routes/UserRoute.js";
+import UserRoutes from "./routes/UserRoutes.js";
 import UserInputField from "./routes/UserInputFieldRoutes.js";
 import EmploiRoutes from "./routes/EmploiRoutes.js";
 import CompetenceRoutes from "./routes/CompetenceRoutes.js";
