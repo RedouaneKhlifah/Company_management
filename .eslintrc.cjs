@@ -8,7 +8,6 @@ module.exports = {
         "prefer-const": ["warn"],
         quotes: ["warn", "double"],
         "comma-dangle": ["off"],
-        "multiline-ternary": ["off"],
-        camelcase: ["off"]
+        "multiline-ternary": ["off"]
     }
 };

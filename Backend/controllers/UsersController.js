@@ -111,10 +111,10 @@ export const adminCreateUser = asyncHandler(async (req, res) => {
     } = req.body.professionalInfo;
     const skills = req.body.skills ? JSON.parse(req.body.skills) : [];
     const jobs = req.body.jobs ? JSON.parse(req.body.jobs) : [];
-    const defaultPassword = "anep1234";
     const fullName = name.trim() + " " + familyName.trim();
     const profilePicture =
         req.file?.path ?? "Backend/storage/avatar/default.jpg";
+    const defaultPassword = "anep1234";
 
     const otherInfo = {
         userType:
@@ -168,11 +168,11 @@ export const adminCreateUser = asyncHandler(async (req, res) => {
 
 /**
  * @desc Update an existed user by the admin
- * @route PUT & PATCH /api/user/admin
+ * @route PUT & PATCH /api/user/admin/:id
  * @access private (Admin and above only)
  */
 export const adminUpdateUser = asyncHandler(async (req, res) => {
-    const user = await User.findById(req.body._id).select("-password");
+    const user = await User.findById(req.params.id);
 
     if (user) {
         const {
@@ -252,9 +252,20 @@ export const adminUpdateUser = asyncHandler(async (req, res) => {
 
 /**
  * @desc Delete an existed user by the admin
- * @route DELETE /api/user/admin
+ * @route DELETE /api/user/admin/:id
  * @access private (Super Admin only)
  */
 export const adminDeleteUser = asyncHandler(async (req, res) => {
+    const user = await User.findById(req.params.id);
 
+    if (user) {
+        const fullName = user.otherInfo.fullName;
+
+        await User.deleteOne({ _id: req.params.id });
+
+        res.status(200).json({ message: "Le profil de " + fullName + " a été supprimé avec succès." });
+    } else {
+        res.status(404);
+        throw new Error("Employé introuvable.");
+    }
 });
