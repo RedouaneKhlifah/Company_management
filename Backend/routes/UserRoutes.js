@@ -5,7 +5,8 @@ import {
     getUserProfile,
     searchForUser,
     adminCreateUser,
-    adminUpdateUser
+    adminUpdateUser,
+    adminDeleteUser
 } from "../controllers/UsersController.js";
 import { protect } from "../middleware/authMiddleware.js";
 import { superAdmin } from "../middleware/superAdminMiddleware.js";
@@ -17,9 +18,9 @@ import avatarUpload from "../middleware/avatarUploadMiddleware.js";
 
 const router = Router();
 
-router.get("/search/:name", searchForUser);
 router.post("/auth", authUser);
 router.post("/logout", logoutUser);
+router.get("/search/:name", protect, searchForUser);
 router.get("/profile", protect, getUserProfile);
 router
     .route("/admin")
@@ -29,7 +30,9 @@ router
         avatarUpload.single("avatar"),
         adminCreateUserValidationRules,
         adminCreateUser
-    )
+    );
+router
+    .route("/admin/:id")
     .put(
         protect,
         admin,
@@ -42,6 +45,11 @@ router
         admin,
         adminUpdateUserSkillsValidationRules,
         adminUpdateUser
+    )
+    .delete(
+        protect,
+        superAdmin,
+        adminDeleteUser
     );
 
 export default router;
