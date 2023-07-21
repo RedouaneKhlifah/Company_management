@@ -1,7 +1,8 @@
 import express from "express";
 import {
     createEmploi,
-    fetchEmplois,
+    fetchAllEmplois,
+    fetchSingleEmploi,
     updateEmploi,
     deleteEmploi
 } from "../controllers/EmploisController.js";
@@ -12,7 +13,10 @@ const router = express.Router();
 router.post("/", createEmploi);
 
 // Get all Emplois
-router.get("/", fetchEmplois);
+router.get("/", fetchAllEmplois);
+
+// Get one Emploi
+router.get("/:id", fetchSingleEmploi);
 
 // Update an Emploi by ID
 router.put("/:id", updateEmploi);
