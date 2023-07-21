@@ -5,7 +5,6 @@ import "./index.css";
 import { ThemeProvider } from "@material-tailwind/react";
 import {
     createBrowserRouter,
-    BrowserRouter,
     Route,
     createRoutesFromElements,
     RouterProvider
