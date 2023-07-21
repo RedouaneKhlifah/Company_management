@@ -1,5 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
+import cors from "cors";
 import cookieParser from "cookie-parser";
 import connectDB from "./config/Db.js";
 import UserRoutes from "./routes/UserRoutes.js";
@@ -15,6 +16,7 @@ connectDB();
 const port = process.env.PORT || 5000;
 const app = express();
 
+app.use(cors());
 // Using the cookie-parser middleware to parse cookies from incoming requests
 app.use(cookieParser());
 

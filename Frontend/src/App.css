@@ -1,0 +1,3 @@
+.navlink.active {
+    @apply bg-yellow-300;
+}
