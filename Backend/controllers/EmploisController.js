@@ -1,5 +1,6 @@
 import asyncHandler from "express-async-handler";
 import Emploi from "../models/EmploiModel.js";
+import Competence from "../models/CompetenceModel.js";
 
 // @desc    Create a new emploi
 // @route   POST /api/emplois
@@ -15,7 +16,20 @@ const createEmploi = asyncHandler(async (req, res) => {
     }
     const { Titre, Formation, Spécialité, Expérience, ...otherInfo } =
         req.body.info_emploi;
-    const Compétences = req.body.Compétences;
+    const Compétences = await Promise.all(
+        req.body.Compétences.map(async (compétence) => {
+            // Find the competence by its competence_id
+            const existingCompetence = await Competence.findById(
+                compétence.competence_id
+            );
+            if (existingCompetence) {
+                return {
+                    competence_id: compétence.competence_id,
+                    Niveau: compétence.Niveau
+                };
+            }
+        })
+    );
     const history = {
         createdBy: {
             user_id: req.user._id,
@@ -74,19 +88,35 @@ const updateEmploi = asyncHandler(async (req, res) => {
     const emploiId = req.params.id;
     const updateData = req.body;
 
-    const updatedEmploi = await Emploi.findByIdAndUpdate(emploiId, updateData, {
-        new: true
-    });
-
-    if (!updatedEmploi) {
+    const existingEmploi = await Emploi.findById(emploiId);
+    if (!existingEmploi) {
         res.status(404);
         throw new Error("L'emploi spécifié n'a pas été trouvé.");
     }
 
-    res.status(200).json({
-        message: "L'emploi a été mis à jour avec succès.",
-        data: updatedEmploi
+    // Update the Emploi document with the provided data
+    const updatedEmploi = await Emploi.findByIdAndUpdate(emploiId, updateData, {
+        new: true
     });
+
+    // If the Emploi document was updated, add the update history to it
+    if (updatedEmploi) {
+        updatedEmploi.history.updatedBy.push({
+            user_id: req.user._id,
+            timestamp: new Date()
+        });
+
+        // Save the updated Emploi document with the update history
+        await updatedEmploi.save();
+
+        res.status(200).json({
+            message: "L'emploi a été mis à jour avec succès.",
+            data: updatedEmploi
+        });
+    } else {
+        res.status(500);
+        throw new Error("Erreur lors de la mise à jour de l'emploi.");
+    }
 });
 
 // @desc    Delete an emploi by ID
