@@ -6,22 +6,23 @@ import {
     updateEmploi,
     deleteEmploi
 } from "../controllers/EmploisController.js";
+import { protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
 // Create a new Emploi
-router.post("/", createEmploi);
+router.route("/").post(protect, createEmploi);
 
 // Get all Emplois
-router.get("/", fetchAllEmplois);
+router.route("/").get(protect, fetchAllEmplois);
 
 // Get one Emploi
-router.get("/:id", fetchSingleEmploi);
+router.route("/:id").get(protect, fetchSingleEmploi);
 
 // Update an Emploi by ID
-router.put("/:id", updateEmploi);
+router.route("/:id").put(protect, updateEmploi);
 
 // Delete an Emploi by ID
-router.delete("/:id", deleteEmploi);
+router.delete("/:id").put(protect, deleteEmploi);
 
 export default router;

@@ -31,14 +31,6 @@ const emploiSchema = mongoose.Schema(
                     type: mongoose.Schema.Types.ObjectId,
                     ref: "Competence"
                 },
-                Titre: {
-                    type: String,
-                    required: true
-                },
-                "Type de savoire": {
-                    type: String,
-                    required: true
-                },
                 Niveau: {
                     type: Number,
                     required: true
