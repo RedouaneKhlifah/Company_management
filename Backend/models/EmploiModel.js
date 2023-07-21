@@ -3,6 +3,12 @@ import mongoose from "mongoose";
 const emploiSchema = mongoose.Schema(
     {
         info_emploi: {
+            Titre: {
+                type: String,
+                trim: true,
+                required: true,
+                unique: true
+            },
             Formation: {
                 type: String,
                 trim: true,
@@ -25,27 +31,29 @@ const emploiSchema = mongoose.Schema(
                     type: mongoose.Schema.Types.ObjectId,
                     ref: "Competence"
                 },
-                Titre: {
-                    type: String,
-                    required: true
-                },
-                "Type de savoire": {
-                    type: String,
-                    required: true
-                },
                 Niveau: {
                     type: Number,
                     required: true
                 }
             }
         ],
-        createdBy: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User"
-        },
-        updatedBy: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User"
+        history: {
+            createdBy: {
+                user_id: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: "personne"
+                },
+                timestamp: Date,
+            },
+            updatedBy: [
+                {
+                    user_id: {
+                        type: mongoose.Schema.Types.ObjectId,
+                        ref: "personne"
+                    },
+                    timestamp: Date,
+                }
+            ]
         }
     },
 
