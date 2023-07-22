@@ -23,6 +23,6 @@ router.route("/:id").get(protect, fetchSingleEmploi);
 router.route("/:id").put(protect, updateEmploi);
 
 // Delete an Emploi by ID
-router.delete("/:id").put(protect, deleteEmploi);
+router.route("/:id").delete(protect, deleteEmploi);
 
 export default router;

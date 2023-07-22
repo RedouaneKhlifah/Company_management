@@ -17,6 +17,7 @@ const port = process.env.PORT || 5000;
 const app = express();
 
 app.use(cors());
+
 // Using the cookie-parser middleware to parse cookies from incoming requests
 app.use(cookieParser());
 

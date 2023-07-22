@@ -1,6 +1,43 @@
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useLoginMutation } from "../slices/usersApiSlice";
+import { setCredentials } from "../slices/authSlice";
+import { toast } from "react-toastify";
 import { Input } from "@material-tailwind/react";
+import { Icon } from "@iconify/react";
+import ANEPBtn from "../components/utils/ANEPBtn";
 
 function SignIn() {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState(false);
+
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const [login, { isLoading }] = useLoginMutation();
+    const { userInfo } = useSelector((state) => state.auth);
+
+    useEffect(() => {
+        if (userInfo) {
+            navigate("/");
+        }
+    }, [navigate, userInfo]);
+
+    const loginHandler = async (evt) => {
+        evt.preventDefault();
+        setError(false);
+
+        try {
+            const res = await login({ email, password }).unwrap();
+            dispatch(setCredentials({...res}));
+            navigate("/");
+        } catch (err) {
+            setError(true);
+            toast.error(err.data.message);
+        }
+    };
+
     return (
         <main className="min-h-screen flex items-center justify-center bg-anep-secondary">
             <div className="md-max:mx-3 md-max:max-w-[500px] container lg:w-[980px] flex md-max:justify-center border border-gray-400 rounded-lg overflow-hidden bg-white">
@@ -16,26 +53,35 @@ function SignIn() {
                     <p className="text-anep-dark lg:text-lg text-center font-medium">
                         Veuillez vous connecter pour accéder à la plateforme.
                     </p>
-                    <form action="">
+                    <form onSubmit={loginHandler}>
                         <div className="min-w-[240px] sm:min-w-[300px] flex flex-col items-center content-center gap-y-4">
                             <Input
                                 label="E-mail"
                                 type="email"
                                 size="lg"
                                 required
+                                error={error}
                                 className="focus:ring-0"
-                                // containerProps={{ className: "min-w-[300px]" }}
+                                value={email}
+                                onChange={(evt) => setEmail(evt.target.value)}
                             />
                             <Input
                                 label="Mot de passe"
                                 type="password"
                                 size="lg"
                                 required
+                                error={error}
                                 className="focus:ring-0"
+                                value={password}
+                                onChange={(evt) =>
+                                    setPassword(evt.target.value)
+                                }
                             />
-                            <button className="bg-anep-secondary px-6 py-1.5 rounded-lg border border-anep-primary">
-                                Submit
-                            </button>
+                            <ANEPBtn
+                                name="LOGIN"
+                                color="blue"
+                                icon="material-symbols:login-rounded"
+                            />
                         </div>
                     </form>
                 </div>
