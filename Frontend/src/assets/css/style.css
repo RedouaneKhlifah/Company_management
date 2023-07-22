@@ -1,0 +1,9 @@
+.anep-btn-primary {
+    @apply bg-gradient-to-br from-anep-primary-light to-anep-primary-dark text-white
+}
+.anep-btn-secondary {
+    @apply bg-gradient-to-br from-gray-100 to-gray-300 text-anep-dark
+}
+.anep-btn-danger {
+    @apply bg-gradient-to-br from-red-500 to-red-700 text-white
+}

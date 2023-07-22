@@ -17,6 +17,8 @@ export default withMT({
                 "anep-yellow": "#ffd200",
                 "anep-light-blue": "#58affc",
                 "anep-primary": "#035179",
+                "anep-primary-light": "#046a9f",
+                "anep-primary-dark": "#03496d",
                 "anep-secondary": "#edf2f9",
                 "anep-light": "#d9e3ec",
                 "anep-dark": "#303030",
