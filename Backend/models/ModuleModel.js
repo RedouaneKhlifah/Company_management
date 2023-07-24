@@ -6,8 +6,8 @@ const ModuleSchema = mongoose.Schema(
             type: String,
             required: [true, "module error"]
         },
-        competences: [
-            { type: mongoose.Schema.Types.ObjectId, ref: "competences" }
+        competence: [
+            { type: mongoose.Schema.Types.ObjectId, ref: "competence" }
         ]
     },
     { strict: false }
