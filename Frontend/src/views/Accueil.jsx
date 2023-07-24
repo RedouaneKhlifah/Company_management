@@ -1,8 +1,8 @@
 import React from "react";
 import Sidebar from "../components/Sidebar";
-import CompetanceTable from "../components/CompetanceTable";
+import CompetanceTable from "../components/CompetenceTable";
 import ModuleForm from "../components/modals/ModuleForm";
-import Button from "../components/Button";
+import Button from "../components/utils/Button";
 
 function Accueil() {
     return (

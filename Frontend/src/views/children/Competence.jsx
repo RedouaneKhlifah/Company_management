@@ -1,5 +1,7 @@
+import { Outlet } from "react-router-dom";
+
 function Competence() {
-    return <p>Competence Page</p>
+    return <Outlet />;
 }
 
 export default Competence;
