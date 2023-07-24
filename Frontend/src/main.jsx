@@ -2,10 +2,11 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import "./index.css";
+import store from "./store.js";
+import { Provider } from "react-redux";
 import { ThemeProvider } from "@material-tailwind/react";
 import {
     createBrowserRouter,
-    BrowserRouter,
     Route,
     createRoutesFromElements,
     RouterProvider
@@ -66,9 +67,11 @@ const router = createBrowserRouter(
 );
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-    <React.StrictMode>
-        <ThemeProvider>
-            <RouterProvider router={router} />
-        </ThemeProvider>
-    </React.StrictMode>
+    <Provider store={store}>
+        <React.StrictMode>
+            <ThemeProvider>
+                <RouterProvider router={router} />
+            </ThemeProvider>
+        </React.StrictMode>
+    </Provider>
 );
