@@ -12,7 +12,9 @@ const authSlice = createSlice({
     reducers: {
         setCredentials: (state, action) => {
             state.userInfo = action.payload;
+            const expires = Date.now() + 30 * 24 * 60 * 60 * 1000;
             localStorage.setItem("userInfo", JSON.stringify(action.payload));
+            localStorage.setItem("expiresAt", expires);
         },
         clearCredentials: (state, action) => {
             state.userInfo = null;
@@ -20,8 +22,6 @@ const authSlice = createSlice({
         }
     }
 });
-console.log("authSlice.actions: ", authSlice.actions);
-console.log("authSlice.reducer: ", authSlice.reducer);
 
 export const { setCredentials, clearCredentials } = authSlice.actions;
 
