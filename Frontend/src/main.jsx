@@ -19,9 +19,15 @@ import Employe from "./views/children/Employe.jsx";
 import Competence from "./views/children/Competence";
 import Module from "./views/children/Module";
 import EmployeHome from "./views/children/employees/EmployeHome.jsx";
-import EmployeDetails, { employeDetailsLoader } from "./views/children/employees/EmployeDetails.jsx";
+import EmployeDetails, {
+    employeDetailsLoader
+} from "./views/children/employees/EmployeDetails.jsx";
 import PageNotFound from "./views/PageNotFound";
 import PrivateRoute from "./components/PrivateRoute.jsx";
+import CompetenceHome from "./views/children/skills/CompetenceHome.jsx";
+
+// loaders
+import { fetchAllCompetences } from "./loaders/Competences.js";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -42,7 +48,13 @@ const router = createBrowserRouter(
                         />
                     </Route>
 
-                    <Route path="skills" element={<Competence />}></Route>
+                    <Route path="competence" element={<Competence />}>
+                        <Route
+                            index
+                            element={<CompetenceHome />}
+                            loader={fetchAllCompetences}
+                        />
+                    </Route>
 
                     <Route path="modules" element={<Module />}></Route>
                 </Route>

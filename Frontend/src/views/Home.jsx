@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import { useLogoutMutation } from "../slices/usersApiSlice";
 import { clearCredentials } from "../slices/authSlice";
 import { useState } from "react";
+import Sidebar from "../components/Sidebar";
 
 function Main() {
     const { userInfo } = useSelector((state) => state.auth);
@@ -23,9 +24,11 @@ function Main() {
 
     const crumbs = pathArr.map((crumb, index) => {
         currentLink += `/${crumb}`;
+        const key = `crumb-${index}`;
 
         return (
             <div
+                key={key}
                 className={
                     pathArr.length - 1 === index
                         ? "text-gray-900"
@@ -67,9 +70,10 @@ function Main() {
     }, [expires, dispatch]);
 
     return (
-        <main className="container mt-3 mx-auto grid grid-cols-[auto_1fr] gap-x-5">
+        <main className="container mt-3 mx-auto grid grid-cols-[auto_1fr] gap-x-3">
             {/* Side bar */}
-            <div className="bg-yellow-200 flex flex-col gap-y-6 child:py-1 child:px-4 child:border child:border-black child:rounded-lg">
+            <Sidebar />
+            {/* <div className="bg-yellow-200 flex flex-col gap-y-6 child:py-1 child:px-4 child:border child:border-black child:rounded-lg">
                 <NavLink to="/" className="navlink">
                     Accueil
                 </NavLink>
@@ -82,7 +86,7 @@ function Main() {
                 <NavLink to="employees/some_id_here" className="navlink">
                     Employées details
                 </NavLink>
-                <NavLink to="skills" className="navlink">
+                <NavLink to="competence" className="navlink">
                     Compétences
                 </NavLink>
                 <NavLink to="modules" className="navlink">
