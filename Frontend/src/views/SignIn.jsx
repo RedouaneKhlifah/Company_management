@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useLoginMutation } from "../slices/usersApiSlice";
+import { useLoginMutation, useUserProfileMutation } from "../slices/usersApiSlice";
 import { setCredentials } from "../slices/authSlice";
 import { toast } from "react-toastify";
 import { Input } from "@material-tailwind/react";
-import { Icon } from "@iconify/react";
 import ANEPBtn from "../components/utils/ANEPBtn";
 
 function SignIn() {
@@ -15,7 +14,8 @@ function SignIn() {
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const [login, { isLoading }] = useLoginMutation();
+    const [login, { isLoading: loginLoading }] = useLoginMutation();
+    const [userProfile, { isLoading: userProfileLoading }] = useUserProfileMutation();
     const { userInfo } = useSelector((state) => state.auth);
 
     useEffect(() => {
@@ -29,7 +29,8 @@ function SignIn() {
         setError(false);
 
         try {
-            const res = await login({ email, password }).unwrap();
+            await login({ email, password }).unwrap();
+            const res = await userProfile().unwrap();
             dispatch(setCredentials({...res}));
             navigate("/");
         } catch (err) {
@@ -41,7 +42,7 @@ function SignIn() {
     return (
         <main className="min-h-screen flex items-center justify-center bg-anep-secondary">
             <div className="md-max:mx-3 md-max:max-w-[500px] container lg:w-[980px] flex md-max:justify-center border border-gray-400 rounded-lg overflow-hidden bg-white">
-                <div className="md:w-1/2 md-max:h-[600px] px-3 flex flex-col items-center justify-center gap-y-14 md:gap-y-10 lg:gap-y-20">
+                <div className="md:w-1/2 md-max:h-[600px] px-3 py-10 flex flex-col items-center justify-center gap-y-14 md:gap-y-10 lg:gap-y-20">
                     <img
                         className="h-16"
                         src="../src/assets/images/logo/logo-anep-flat.png"
@@ -80,7 +81,7 @@ function SignIn() {
                             <ANEPBtn
                                 name="LOGIN"
                                 color="blue"
-                                icon="material-symbols:login-rounded"
+                                icon={ loginLoading || userProfileLoading ? "svg-spinners:ring-resize" : "material-symbols:login-rounded"}
                             />
                         </div>
                     </form>
