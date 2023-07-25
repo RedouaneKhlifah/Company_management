@@ -11,21 +11,21 @@ function Sidebar() {
         console.log("test");
     };
     const SidebarButtons = [
-        { link: "Accueil", title: "Accueil", imgsrc: "/imgsrc", state: show },
+        { link: "/", title: "Accueil", imgsrc: "/imgsrc", state: show },
         { link: "/emplois", title: "emplois", imgsrc: "/imgsrc", state: show },
         {
-            link: "Employee",
+            link: "employees",
             title: "Employées",
             imgsrc: "/imgsrc",
             state: show
         },
         {
-            link: "Competence",
+            link: "competences",
             title: "Compétences",
             imgsrc: "/imgsrc",
             state: show
         },
-        { link: "Module", title: "Modules", imgsrc: "/imgsrc", state: show }
+        { link: "modules", title: "Modules", imgsrc: "/imgsrc", state: show }
     ];
 
     return (

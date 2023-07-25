@@ -14,7 +14,7 @@ const router = express.Router();
 router.route("/").post(protect, createEmploi);
 
 // Get all Emplois
-router.route("/").get(protect, fetchAllEmplois);
+router.route("/").get(fetchAllEmplois);
 
 // Get one Emploi
 router.route("/:id").get(protect, fetchSingleEmploi);

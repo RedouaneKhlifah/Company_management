@@ -25,9 +25,14 @@ import EmployeDetails, {
 import PageNotFound from "./views/PageNotFound";
 import PrivateRoute from "./components/PrivateRoute.jsx";
 import CompetenceHome from "./views/children/skills/CompetenceHome.jsx";
+import EmploiHome from "./views/children/jobs/EmploiHome.jsx";
+// import EmploiDetails, {
+//     emploiDetailsLoader
+// }  from "./views/children/employees/EmploiDetails.jsx";
 
 // loaders
 import { fetchAllCompetences } from "./loaders/Competences.js";
+import { fetchAllEmplois } from "./loaders/Emplois.js";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -37,7 +42,14 @@ const router = createBrowserRouter(
                 <Route path="" element={<Home />}>
                     <Route index element={<Accueil />} />
 
-                    <Route path="jobs" element={<Emploi />}></Route>
+                    <Route path="emplois" element={<Emploi />}>
+                        <Route index element={<EmploiHome />} loader={fetchAllEmplois} />
+                        {/* <Route
+                            path=":id"
+                            element={<EmploiDetails />}
+                            loader={employeDetailsLoader}
+                        /> */}
+                    </Route>
 
                     <Route path="employees" element={<Employe />}>
                         <Route index element={<EmployeHome />} />
@@ -48,7 +60,7 @@ const router = createBrowserRouter(
                         />
                     </Route>
 
-                    <Route path="competence" element={<Competence />}>
+                    <Route path="competences" element={<Competence />}>
                         <Route
                             index
                             element={<CompetenceHome />}
