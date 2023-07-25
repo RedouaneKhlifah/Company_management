@@ -23,6 +23,7 @@ import EmployeDetails, {
     employeDetailsLoader
 } from "./views/children/employees/EmployeDetails.jsx";
 import PageNotFound from "./views/PageNotFound";
+import PrivateRoute from "./components/PrivateRoute.jsx";
 import CompetenceHome from "./views/children/skills/CompetenceHome.jsx";
 
 // loaders
@@ -32,36 +33,38 @@ const router = createBrowserRouter(
     createRoutesFromElements(
         <Route path="/" element={<App />}>
             {/* Routes if user is authentified */}
-            <Route path="" element={<Home />}>
-                <Route index element={<Accueil />} />
+            <Route path="" element={<PrivateRoute />}>
+                <Route path="" element={<Home />}>
+                    <Route index element={<Accueil />} />
 
-                <Route path="jobs" element={<Emploi />}></Route>
+                    <Route path="jobs" element={<Emploi />}></Route>
 
-                <Route path="employees" element={<Employe />}>
-                    <Route index element={<EmployeHome />} />
-                    <Route
-                        path=":id"
-                        element={<EmployeDetails />}
-                        loader={employeDetailsLoader}
-                    />
+                    <Route path="employees" element={<Employe />}>
+                        <Route index element={<EmployeHome />} />
+                        <Route
+                            path=":id"
+                            element={<EmployeDetails />}
+                            loader={employeDetailsLoader}
+                        />
+                    </Route>
+
+                    <Route path="competence" element={<Competence />}>
+                        <Route
+                            index
+                            element={<CompetenceHome />}
+                            loader={fetchAllCompetences}
+                        />
+                    </Route>
+
+                    <Route path="modules" element={<Module />}></Route>
                 </Route>
-
-                <Route path="competence" element={<Competence />}>
-                    <Route
-                        index
-                        element={<CompetenceHome />}
-                        loader={fetchAllCompetences}
-                    />
-                </Route>
-
-                <Route path="modules" element={<Module />}></Route>
+                
+                {/* Route to Page not found */}
+                <Route path="*" element={<PageNotFound />} />
             </Route>
 
             {/* Route to Sign-in page */}
             <Route path="signin" element={<SignIn />} />
-
-            {/* Route to Page not found */}
-            <Route path="*" element={<PageNotFound />} />
         </Route>
     )
 );
