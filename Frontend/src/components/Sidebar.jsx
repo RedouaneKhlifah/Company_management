@@ -11,43 +11,51 @@ function Sidebar() {
         console.log("test");
     };
     const SidebarButtons = [
-        { link: "/emplois", title: "Accueil", imgsrc: "/imgsrc", state: show },
+        { link: "/", title: "Accueil", imgsrc: "/imgsrc", state: show },
         { link: "/emplois", title: "emplois", imgsrc: "/imgsrc", state: show },
         {
-            link: "/emplois",
+            link: "employees",
             title: "Employées",
             imgsrc: "/imgsrc",
             state: show
         },
         {
-            link: "/emplois",
+            link: "competences",
             title: "Compétences",
             imgsrc: "/imgsrc",
             state: show
         },
-        { link: "/emplois", title: "Modules", imgsrc: "/imgsrc", state: show }
+        { link: "modules", title: "Modules", imgsrc: "/imgsrc", state: show }
     ];
 
     return (
-        <div className="w-2/12 relative">
+        <div className=" relative">
             <div
                 className={`${
-                    show ? "w-11/12" : " w-4/12"
-                } bg-lighterGray ml-2 mt-2 rounded-lg transition-all duration-500`}
+                    show ? "w-11/12" : " w-8/12"
+                } bg-anep-secondary ml-2 mt-2 rounded-lg transition-all duration-500`}
             >
+                {/* anep image */}
                 <SidebarAnepIcon state={show} />
+
+                {/* arrow icon */}
                 {
                     <IoIosArrowDropleftCircle
                         onClick={handleIconClick}
                         className={`text-anepBlue text-2xl absolute top-12 ${
-                            show ? "right-0" : "right-32"
-                        } rotate-${show ? 0 : 180} transition-all duration-500`}
+                            show ? "right-0" : "right-4"
+                        } ${
+                            show ? "rotate-0" : "rotate-180"
+                        } transition-all duration-500`}
                     />
                 }
-                <div className="flex flex-col gap-y-5 items-center py-4">
+
+                {/* links */}
+                <div className="flex flex-col gap-y-5  py-4">
                     {SidebarButtons.map((btn) => {
                         return (
                             <SidebarButton
+                                key={btn.link}
                                 link={btn.link}
                                 title={btn.title}
                                 imgsrc={btn.imgsrc}

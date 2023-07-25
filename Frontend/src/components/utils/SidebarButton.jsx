@@ -1,17 +1,17 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { HiAcademicCap } from "react-icons/hi";
 
 function SidebarButton({ link, title, icon, state }) {
     return (
         <>
-            <Link to={link}>
+            <NavLink to={link}>
                 <div>
                     <button
-                        className={`rounded-md ${
-                            state ? "w-40" : "w-10"
-                        } h-11  text-white bg-anepBlue flex flex-row justify-start
-                        } items-center gap-3 transition-all duration-500`}
+                        className={`rounded-md m-auto ${
+                            state ? "w-10/12" : "w-10"
+                        }  h-11  text-white text-base bg-anep-primary flex flex-row justify-start
+                        } items-center gap-2  transition-all duration-500 navlink`}
                     >
                         <div className={`pl-2`}>
                             <HiAcademicCap
@@ -25,7 +25,7 @@ function SidebarButton({ link, title, icon, state }) {
                         {state && title}
                     </button>
                 </div>
-            </Link>
+            </NavLink>
         </>
     );
 }

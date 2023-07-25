@@ -2,19 +2,17 @@ import {
     Card,
     CardBody,
     CardFooter,
-    Typography,
-    Button
+    Typography
 } from "@material-tailwind/react";
-// import PropTypes from "prop-types";
+import PropTypes from "prop-types";
+import ANEPBtn from "./ANEPBtn";
+import { Link } from "react-router-dom";
 
-function CardEmploi({titre, specialite, exp}) {
+function CardEmploi({ titre, specialite, exp, id }) {
     return (
-        <Card className="mt-6 w-96 bg-anep-secondary" >
+        <Card className="mt-6 w-96 bg-anep-secondary">
             <CardBody>
-                <Typography
-                    color="anep-light"
-                    className="font-bold font-cairo"
-                >
+                <Typography color="anep-light" className="font-bold font-cairo">
                     {titre}
                 </Typography>
                 <div className="mb-2 flex items-center justify-between">
@@ -28,27 +26,23 @@ function CardEmploi({titre, specialite, exp}) {
                         color="anep-primary"
                         className="font-semibold font-cairo"
                     >
-                        {exp} ans
+                        {exp}
                     </Typography>
                 </div>
             </CardBody>
             <CardFooter className="pt-0">
-                <Button
-                    ripple={false}
-                    fullWidth={false}
-                    className="bg-blue-gray-900/10 text-blue-gray-900 shadow-none hover:scale-105 hover:shadow-none focus:scale-105 focus:shadow-none active:scale-100"
-                >
-                    Add to Cart
-                </Button>
+                <Link to={id} className="btn btn-primary">
+                    <ANEPBtn name="explore" className="m-auto" />
+                </Link>
             </CardFooter>
         </Card>
     );
 }
 
-// CardEmploi.propTypes = {
-//     titre: propTypes.string,
-//     specialite: propTypes.string,
-//     exp: propTypes.string
-// }
+CardEmploi.propTypes = {
+    titre: PropTypes.string,
+    specialite: PropTypes.string,
+    exp: PropTypes.string
+};
 
 export default CardEmploi;

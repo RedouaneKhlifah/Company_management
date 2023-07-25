@@ -4,14 +4,14 @@ import asynchandler from "express-async-handler";
 
 // get all modules
 const fetchModules = asynchandler(async (req, res) => {
-    const modules = await Module.find().populate("competences");
+    const modules = await Module.find().populate("competence");
     res.json(modules);
 });
 
 // Get specific Module
 const fetchModuleById = asynchandler(async (req, res) => {
     const moduleId = req.params.id;
-    const foundModule = await Module.findById(moduleId).populate("competences");
+    const foundModule = await Module.findById(moduleId).populate("competence");
     if (!foundModule) {
         return res.status(400).json({
             message: "Module not exist"

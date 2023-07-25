@@ -2,10 +2,11 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import "./index.css";
+import store from "./store.js";
+import { Provider } from "react-redux";
 import { ThemeProvider } from "@material-tailwind/react";
 import {
     createBrowserRouter,
-    BrowserRouter,
     Route,
     createRoutesFromElements,
     RouterProvider
@@ -18,8 +19,19 @@ import Employe from "./views/children/Employe.jsx";
 import Competence from "./views/children/Competence";
 import Module from "./views/children/Module";
 import EmployeHome from "./views/children/employees/EmployeHome.jsx";
-import EmployeDetails, { employeDetailsLoader } from "./views/children/employees/EmployeDetails.jsx";
+import EmployeDetails, {
+    employeDetailsLoader
+} from "./views/children/employees/EmployeDetails.jsx";
 import PageNotFound from "./views/PageNotFound";
+import CompetenceHome from "./views/children/skills/CompetenceHome.jsx";
+import EmploiHome from "./views/children/jobs/EmploiHome.jsx";
+// import EmploiDetails, {
+//     emploiDetailsLoader
+// }  from "./views/children/employees/EmploiDetails.jsx";
+
+// loaders
+import { fetchAllCompetences } from "./loaders/Competences.js";
+import { fetchAllEmplois } from "./loaders/Emplois.js";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -28,7 +40,14 @@ const router = createBrowserRouter(
             <Route path="" element={<Home />}>
                 <Route index element={<Accueil />} />
 
-                <Route path="jobs" element={<Emploi />}></Route>
+                <Route path="emplois" element={<Emploi />}>
+                    <Route index element={<EmploiHome />} loader={fetchAllEmplois} />
+                    {/* <Route
+                        path=":id"
+                        element={<EmploiDetails />}
+                        loader={employeDetailsLoader}
+                    /> */}
+                </Route>
 
                 <Route path="employees" element={<Employe />}>
                     <Route index element={<EmployeHome />} />
@@ -39,7 +58,13 @@ const router = createBrowserRouter(
                     />
                 </Route>
 
-                <Route path="skills" element={<Competence />}></Route>
+                <Route path="competences" element={<Competence />}>
+                    <Route
+                        index
+                        element={<CompetenceHome />}
+                        loader={fetchAllCompetences}
+                    />
+                </Route>
 
                 <Route path="modules" element={<Module />}></Route>
             </Route>
@@ -54,9 +79,11 @@ const router = createBrowserRouter(
 );
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-    <React.StrictMode>
-        <ThemeProvider>
-            <RouterProvider router={router} />
-        </ThemeProvider>
-    </React.StrictMode>
+    <Provider store={store}>
+        <React.StrictMode>
+            <ThemeProvider>
+                <RouterProvider router={router} />
+            </ThemeProvider>
+        </React.StrictMode>
+    </Provider>
 );
