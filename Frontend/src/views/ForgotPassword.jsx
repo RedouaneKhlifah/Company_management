@@ -1,22 +1,19 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { useLoginMutation, useUserProfileMutation } from "../slices/usersApiSlice";
-import { setCredentials } from "../slices/authSlice";
+import { useSelector } from "react-redux";
+import { useForgotPasswordMutation } from "../slices/usersApiSlice";
 import { toast } from "react-toastify";
 import { Input } from "@material-tailwind/react";
 import ANEPBtn from "../components/utils/ANEPBtn";
 
-function SignIn() {
+function ForgotPassword() {
     const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
     const [error, setError] = useState(false);
 
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
-    const [login, { isLoading: loginLoading }] = useLoginMutation();
-    const [userProfile, { isLoading: userProfileLoading }] = useUserProfileMutation();
+    const [forgotPwd, { isLoading }] = useForgotPasswordMutation();
     const { userInfo } = useSelector((state) => state.auth);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (userInfo) {
@@ -24,15 +21,13 @@ function SignIn() {
         }
     }, [navigate, userInfo]);
 
-    const loginHandler = async (evt) => {
+    const forgotPwdHandler = async (evt) => {
         evt.preventDefault();
         setError(false);
 
         try {
-            await login({ email, password }).unwrap();
-            const res = await userProfile().unwrap();
-            dispatch(setCredentials({...res}));
-            navigate("/");
+            const res = await forgotPwd({ email }).unwrap();
+            toast.success(res.message);
         } catch (err) {
             setError(true);
             toast.error(err.data.message);
@@ -50,13 +45,13 @@ function SignIn() {
                             alt="ANEP logo"
                         />
                     </Link>
-                    <h1 className="text-anep-primary text-3xl lg:text-5xl font-bold">
-                        Login
+                    <h1 className="text-anep-primary text-2xl lg:text-3xl font-bold text-justify">
+                        Réinitialisation du mot de passe
                     </h1>
                     <p className="text-anep-dark lg:text-lg text-center font-medium">
-                        Veuillez vous connecter pour accéder à la plateforme.
+                        Veuillez saisir votre adresse e-mail.
                     </p>
-                    <form onSubmit={loginHandler}>
+                    <form onSubmit={forgotPwdHandler}>
                         <div className="min-w-[240px] sm:min-w-[300px] flex flex-col items-center content-center gap-y-4">
                             <Input
                                 label="E-mail"
@@ -68,26 +63,13 @@ function SignIn() {
                                 value={email}
                                 onChange={(evt) => setEmail(evt.target.value)}
                             />
-                            <Input
-                                label="Mot de passe"
-                                type="password"
-                                size="lg"
-                                required
-                                error={error}
-                                className="focus:ring-0"
-                                value={password}
-                                onChange={(evt) =>
-                                    setPassword(evt.target.value)
-                                }
-                            />
                             <ANEPBtn
-                                name="LOGIN"
+                                name="Envoyer"
                                 color="blue"
-                                icon={ loginLoading || userProfileLoading ? "svg-spinners:ring-resize" : "material-symbols:login-rounded"}
+                                icon={ isLoading ? "svg-spinners:ring-resize" : "material-symbols:send-rounded"}
                             />
                         </div>
                     </form>
-                    <Link to="/forgot-password" className="lg:text-lg font-semibold text-anep-primary-dark hover:text-anep-primary-light hover:underline hover:underline-offset-2 hover:decoration-2 hover:decoration-anep-yellow">Mot de passe oublié?</Link>
                 </div>
                 <div className="w-1/2 border-l border-gray-400 bg-[url('../src/assets/images/anep-signin-bg.jpg')] bg-no-repeat bg-cover hidden md:block">
                     <img
@@ -101,4 +83,4 @@ function SignIn() {
     );
 }
 
-export default SignIn;
+export default ForgotPassword;

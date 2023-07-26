@@ -26,6 +26,7 @@ import PageNotFound from "./views/PageNotFound";
 import PrivateRoute from "./components/PrivateRoute.jsx";
 import CompetenceHome from "./views/children/skills/CompetenceHome.jsx";
 import EmploiHome from "./views/children/jobs/EmploiHome.jsx";
+import ForgotPassword from "./views/ForgotPassword.jsx";
 // import EmploiDetails, {
 //     emploiDetailsLoader
 // }  from "./views/children/employees/EmploiDetails.jsx";
@@ -77,6 +78,9 @@ const router = createBrowserRouter(
 
             {/* Route to Sign-in page */}
             <Route path="signin" element={<SignIn />} />
+
+            {/* Route to Forgot password page */}
+            <Route path="forgot-password" element={<ForgotPassword />} />
         </Route>
     )
 );
