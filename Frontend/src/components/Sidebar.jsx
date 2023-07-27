@@ -34,10 +34,10 @@ function Sidebar() {
     ];
 
     return (
-        <div className="relative transition-all duration-500 drop-shadow-black-sm">
+        <div className="transition-all duration-500 drop-shadow-black-sm">
             <div
                 ref={container}
-                className="w-52 bg-anep-secondary rounded-lg transition-all duration-500"
+                className="sticky top-3 w-52 bg-anep-secondary rounded-lg transition-all duration-500"
             >
                 {/* anep image */}
                 <SidebarAnepIcon state={show} />
