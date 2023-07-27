@@ -1,25 +1,23 @@
-import React from "react";
 import { NavLink } from "react-router-dom";
-import { HiAcademicCap } from "react-icons/hi";
+import { Icon } from "@iconify/react";
 
 function SidebarButton({ link, title, icon, state }) {
     return (
         <>
-            <NavLink to={link}>
+            <NavLink to={link} className="mx-auto w-10/12 text-white text-base lg:text-lg navlink rounded-md overflow-hidden">
                 <div>
                     <button
-                        className={`rounded-md m-auto ${
-                            state ? "w-10/12" : "w-10"
-                        }  h-11  text-white text-base bg-anep-primary flex flex-row justify-start
-                        } items-center gap-2  transition-all duration-500 navlink`}
+                        
+                        className="h-11 w-full flex flex-row justify-start items-center gap-2"
                     >
-                        <div className={`pl-2`}>
-                            <HiAcademicCap
-                                className={` ${
+                        <div className={`${state ? "px-2" : "mx-auto"}`}>
+                            <Icon
+                                icon={icon}
+                                className={`text-2xl ${
                                     state
                                         ? "transform scale-100"
                                         : "transform scale-150"
-                                } h-5 w-5 text-white transition-transform duration-500`}
+                                } transition-transform duration-500`}
                             />
                         </div>
                         {state && title}
