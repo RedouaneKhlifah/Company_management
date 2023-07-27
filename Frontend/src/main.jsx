@@ -41,6 +41,7 @@ const router = createBrowserRouter(
             <Route path="" element={<PrivateRoute />}>
                 <Route path="" element={<Home />}>
                     <Route index element={<Accueil />} />
+
                     <Route path="emplois" element={<Emploi />}>
                         <Route index element={<EmploiHome />} />
                         <Route
@@ -49,6 +50,7 @@ const router = createBrowserRouter(
                             loader={fetchEmplois}
                         />
                     </Route>
+
                     <Route path="employees" element={<Employe />}>
                         <Route index element={<EmployeHome />} />
                         <Route

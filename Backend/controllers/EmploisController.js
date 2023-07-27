@@ -7,7 +7,6 @@ import Competence from "../models/CompetenceModel.js";
 // @access  Public
 
 const createEmploi = asyncHandler(async (req, res) => {
-    console.log(req.body);
     const emploiExist = await Emploi.findOne({
         "info_emploi.Titre": req.body.info_emploi.Titre
     });
