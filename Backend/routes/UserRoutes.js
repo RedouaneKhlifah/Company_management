@@ -2,6 +2,9 @@ import { Router } from "express";
 import {
     authUser,
     logoutUser,
+    forgotPassword,
+    resetPasswordView,
+    resetPassword,
     getUserProfile,
     searchForUser,
     adminCreateUser,
@@ -14,12 +17,16 @@ import { admin } from "../middleware/adminMiddleware.js";
 import { adminCreateUserValidationRules } from "../validators/CreateUserValidator.js";
 import { adminUpdateUserValidationRules } from "../validators/UpdateUserValidator.js";
 import { adminUpdateUserSkillsValidationRules } from "../validators/UpdateUserSkillsValidator.js";
+import { resetPasswordValirationRules } from "../validators/ResetPasswordValidator.js";
 import avatarUpload from "../middleware/avatarUploadMiddleware.js";
 
 const router = Router();
 
 router.post("/auth", authUser);
 router.post("/logout", logoutUser);
+router.post("/forgot-password", forgotPassword);
+router.get("/reset-password/:email/:id/:token", resetPasswordView);
+router.post("/reset-password/:email/:id/:token", resetPasswordValirationRules, resetPassword);
 router.get("/search/:name", protect, searchForUser);
 router.get("/profile", protect, getUserProfile);
 router
@@ -46,10 +53,6 @@ router
         adminUpdateUserSkillsValidationRules,
         adminUpdateUser
     )
-    .delete(
-        protect,
-        superAdmin,
-        adminDeleteUser
-    );
+    .delete(protect, superAdmin, adminDeleteUser);
 
 export default router;

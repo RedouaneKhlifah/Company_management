@@ -1,7 +1,11 @@
 import React from "react";
 
 function EmployeHome() {
-    return <div>EmployeHome</div>;
+    return (
+        <main className="">
+
+        </main>
+    );
 }
 
 export default EmployeHome;

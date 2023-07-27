@@ -1,4 +1,3 @@
-import fs from "fs";
 import { body, validationResult } from "express-validator";
 
 export const adminUpdateUserSkillsValidationRules = [
@@ -11,14 +10,6 @@ export const adminUpdateUserSkillsValidationRules = [
 
         if (!errors.isEmpty()) {
             const extractedErrors = {};
-
-            if (req.file) {
-                fs.unlink(req.file.path, (err) => {
-                    err
-                        ? console.log("Error occurred : " + err)
-                        : console.log("File deleted due to an error.");
-                });
-            }
 
             errors.array().forEach((err) => {
                 const keys = err.path.split(".");

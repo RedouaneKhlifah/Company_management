@@ -4,7 +4,8 @@ import PageNotFound from "../../PageNotFound";
 function EmploiDetails() {
     const emploiData = useLoaderData();
     // console.log(emploiData.message);
-    if(!emploiData.message){
+    console.log(emploiData);
+    
         // alert(emploiData.message); //TODO add error handling here
         
     
@@ -53,14 +54,6 @@ function EmploiDetails() {
             </div>
         </>
     );
-}else{
-    // window.location.href = "/404";
-    return (
-        <>
-        <PageNotFound/>
-        </>
-    )
-}
 }
 
 export const emploiDetailsLoader = async ({ params }) => {

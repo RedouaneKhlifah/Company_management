@@ -1,8 +1,10 @@
 import express from "express";
+import path from "path";
+import { fileURLToPath } from "url";
 import dotenv from "dotenv";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import connectDB from "./config/Db.js";
+import connectDB from "./config/db.js";
 import UserRoutes from "./routes/UserRoutes.js";
 import UserInputField from "./routes/UserInputFieldRoutes.js";
 import EmploiRoutes from "./routes/EmploiRoutes.js";
@@ -16,7 +18,13 @@ connectDB();
 const port = process.env.PORT || 5000;
 const app = express();
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// CORS & EJS
 app.use(cors());
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "ejs");
 
 // Using the cookie-parser middleware to parse cookies from incoming requests
 app.use(cookieParser());
