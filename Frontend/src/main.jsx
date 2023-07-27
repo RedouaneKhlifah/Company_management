@@ -27,13 +27,12 @@ import PrivateRoute from "./components/PrivateRoute.jsx";
 import CompetenceHome from "./views/children/skills/CompetenceHome.jsx";
 import ModuleHome from "./views/children/courses/ModuleHome.jsx";
 import EmploiHome from "./views/children/jobs/EmploiHome.jsx";
+import EmploieDetails from "./views/children/jobs/EmploiDetails.jsx";
 import ForgotPassword from "./views/ForgotPassword.jsx";
 // loaders
 import { fetchCompetences } from "./loaders/Competences.js";
 import { fetchModules } from "./loaders/Modules.js";
-// import EmploiDetails, {
-//     emploiDetailsLoader
-// }  from "./views/children/employees/EmploiDetails.jsx";
+import { fetchEmplois } from "./loaders/Emplois.js";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -44,12 +43,12 @@ const router = createBrowserRouter(
                     <Route index element={<Accueil />} />
 
                     <Route path="emplois" element={<Emploi />}>
-                        <Route index element={<EmploiHome />} loader={fetchAllEmplois} />
-                        {/* <Route
+                        <Route index element={<EmploiHome />} />
+                        <Route
                             path=":id"
-                            element={<EmploiDetails />}
-                            loader={employeDetailsLoader}
-                        /> */}
+                            element={<EmploieDetails />}
+                            loader={fetchEmplois}
+                        />
                     </Route>
 
                     <Route path="employees" element={<Employe />}>
@@ -77,7 +76,7 @@ const router = createBrowserRouter(
                         />
                     </Route>
                 </Route>
-                
+
                 {/* Route to Page not found */}
                 <Route path="*" element={<PageNotFound />} />
             </Route>

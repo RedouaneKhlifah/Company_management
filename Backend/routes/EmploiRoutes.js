@@ -17,7 +17,7 @@ router.route("/").post(protect, createEmploi);
 router.route("/").get(fetchAllEmplois);
 
 // Get one Emploi
-router.route("/:id").get(protect, fetchSingleEmploi);
+router.route("/:id").get(fetchSingleEmploi);
 
 // Update an Emploi by ID
 router.route("/:id").put(protect, updateEmploi);
