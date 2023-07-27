@@ -52,7 +52,7 @@ const Navbar = () => {
         <>
             <nav className="rounded-2xl bg-anep-primary drop-shadow-black-sm">
                 <div className="flex justify-between">
-                    <div className="">
+                    <div className="xl:2xl-max:w-2/3">
                         <Breadcrumbs />
                         <div className="max-w-screen-xl flex flex-wrap items-center justify-between m-5">
                             <a href="#" className="flex items-center">
@@ -75,15 +75,18 @@ const Navbar = () => {
                         </li>
                         <li>
                             <Avatar
+                                className="w-9 h-9 min-w-[36px] min-h-[36px] md:w-12 md:h-12 md:min-w-[48px] md:min-h-[48px] xl:w-16 xl:h-16 xl:min-w-[64px] xl:min-h-[64px] ring-1 xl:ring-2"
                                 src="https://cdn.discordapp.com/attachments/1093229006402375680/1093517657795477534/117645l.jpg"
                                 alt={`Avatar de ${userInfo.otherInfo.fullName}`}
                             />
                         </li>
                         <li className="text-white">
-                            <p className="px-2 text-lg font-semibold whitespace-nowrap">{userInfo.otherInfo.fullName}</p>
+                            <p className="px-2 text-lg font-semibold ">
+                                {userInfo.otherInfo.fullName} Saissi Hassani
+                            </p>
                             <p className="px-2 text-anep-secondary text-sm font-meduim">
                                 {userInfo.personalInfo["Libellé grade"] ??
-                                    "Aucun libellé de grade"}
+                                    "Aucun libellé de grade xcsfsfd sdfsfsd"}
                             </p>
                         </li>
                         <li>

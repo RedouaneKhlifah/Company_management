@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 
 const sizes = {
+    none: "",
     xs: "w-6 h-6 min-w-[24px] min-h-[24px] ring-1",
     sm: "w-9 h-9 min-w-[36px] min-h-[36px] ring-1",
     md: "w-12 h-12 min-w-[48px] min-h-[48px] ring-1",
@@ -9,13 +10,13 @@ const sizes = {
     xxl: "w-28 h-28 min-w-[112px] min-h-[112px] ring-2"
 }
 
-export default function Avatar({ size = "lg", alt = "Avatar", src, className = "" }) {
+export default function Avatar({ size = "none", alt = "Avatar", src, className = "" }) {
     return (
         <picture>
             <img
                 src={src}
                 alt={alt}
-                className={`${sizes[size]} w-16 h-16 min-w-[64px] min-h-[64px] rounded-full object-cover ring-anep-light drop-shadow-black-sm ${className}`}
+                className={`${sizes[size]} rounded-full object-cover ring-anep-light drop-shadow-black-sm ${className}`}
             />
         </picture>
     );

@@ -1,3 +1,8 @@
+.navlink {
+    @apply bg-anep-primary shadow-anep-primary-inset;
+    transition: all 0.5s, box-shadow 0.1s;
+}
 .navlink.active {
-    @apply bg-yellow-300;
+    @apply text-anep-dark bg-gradient-to-br from-white to-light-blue-50;
+    box-shadow: 3px 3px 5px #8e9195, -3px -3px 5px #ffffff;
 }
