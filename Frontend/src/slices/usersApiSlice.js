@@ -10,8 +10,8 @@ export const usersApiSlice = apiSlice.injectEndpoints({
                 method: "POST",
                 body: data
             })
-        }),
+        })
     })
 });
 
-export const { useLoginMutation } = usersApiSlice;
+export const { useLoginMutation  } = usersApiSlice;

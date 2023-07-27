@@ -1,12 +1,10 @@
-import { useEffect, useState } from "react";
+import React from "react";
+import ANEPBtn from "./utils/ANEPBtn";
 import { useLoaderData } from "react-router-dom";
-import axios from "axios";
-import Pagination from "./Pagination";
 
-function CompetanceTable() {
-    const payload = useLoaderData();
-    const competences = payload.competences;
-
+function ModuleTable() {
+    const modules = useLoaderData();
+    console.log(modules);
     return (
         <>
             <div className=" w-full mt-8 flex flex-col">
@@ -19,38 +17,44 @@ function CompetanceTable() {
                                         <th
                                             scope="col"
                                             className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-500 sm:pl-6"
+                                        ></th>
+                                        <th
+                                            scope="col"
+                                            className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-500 sm:pl-6"
                                         >
-                                            Compétences
+                                            Modules
                                         </th>
                                         <th
                                             scope="col"
                                             className="px-3 py-3.5 text-left text-sm font-semibold text-gray-500"
                                         >
-                                            Type de savoir
+                                            Nu competence
                                         </th>
                                         <th
                                             scope="col"
                                             className="px-3 py-3.5 text-left text-sm font-semibold text-gray-500"
-                                        >
-                                            Module
-                                        </th>
+                                        ></th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-gray-200 bg-white">
-                                    {competences.map((competence) => (
-                                        <tr key={competence._id}>
-                                            <td className="w-6/12 py-4  pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 hover:underline cursor-pointer">
-                                                {competence.titre}
-                                            </td>
-                                            <td className="w-2/12 px-3 py-4 text-sm text-gray-700">
-                                                {competence.type_de_savoire}
-                                            </td>
-                                            <td className="w-4/12 px-3 py-4 text-sm text-gray-700">
-                                                {competence.module_id?.titre ??
-                                                    "none"}
-                                            </td>
-                                        </tr>
-                                    ))}
+                                    {modules.map((module) => {
+                                        return (
+                                            <tr key={module._id}>
+                                                <td className="w-1/12 px-3 py-4 text-sm text-gray-700">
+                                                    1
+                                                </td>
+                                                <td className="w-7/12 py-4  pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 hover:underline cursor-pointer">
+                                                    {module.titre}
+                                                </td>
+                                                <td className="w-2/12 px-3 py-4 text-sm text-gray-700">
+                                                    {/* {module?.Competences.length + 1} */}
+                                                </td>
+                                                <td className="w-4/12 px-3 py-4 text-sm text-gray-700">
+                                                    <ANEPBtn name={"Explore"} />
+                                                </td>
+                                            </tr>
+                                        );
+                                    })}
                                 </tbody>
                             </table>
                             <div className="md:px-6 lg:px-8 pt-6 pb-4 border-t-2">
@@ -64,4 +68,4 @@ function CompetanceTable() {
     );
 }
 
-export default CompetanceTable;
+export default ModuleTable;

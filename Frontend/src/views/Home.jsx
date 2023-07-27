@@ -1,7 +1,24 @@
 import { Outlet, NavLink, useLocation, Link } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
+// import { useEffect } from "react";
+// import { useDispatch } from "react-redux";
+// import { setCompetence } from "../slices/competenceSlice";
+// import axios from "axios";
 
 function Main() {
+    // const dispatch = useDispatch();
+    // const url = "http://localhost:5000/api/competence";
+    // // Dispatch competence data to the Redux store when the component mounts
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         const response = await axios.get(url);
+    //         console.log(response.data);
+    //         const competenceData = response.data.competencesWithModule;
+    //         dispatch(setCompetence(competenceData));
+    //     };
+    //     fetchData();
+    // }, []);
+
     const location = useLocation();
     const pathArr = location.pathname.replace(/^\/|\/$/g, "").split("/");
     let currentLink = "";

@@ -24,9 +24,11 @@ import EmployeDetails, {
 } from "./views/children/employees/EmployeDetails.jsx";
 import PageNotFound from "./views/PageNotFound";
 import CompetenceHome from "./views/children/skills/CompetenceHome.jsx";
+import ModuleHome from "./views/children/courses/ModuleHome.jsx";
 
 // loaders
-import { fetchAllCompetences } from "./loaders/Competences.js";
+import { fetchCompetences } from "./loaders/Competences.js";
+import { fetchModules } from "./loaders/Modules.js";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -50,11 +52,17 @@ const router = createBrowserRouter(
                     <Route
                         index
                         element={<CompetenceHome />}
-                        loader={fetchAllCompetences}
+                        loader={fetchCompetences}
                     />
                 </Route>
 
-                <Route path="modules" element={<Module />}></Route>
+                <Route path="module" element={<Module />}>
+                    <Route
+                        index
+                        element={<ModuleHome />}
+                        loader={fetchModules}
+                    />
+                </Route>
             </Route>
 
             {/* Route to Sign-in page */}

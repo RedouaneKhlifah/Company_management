@@ -30,7 +30,8 @@ function SignIn() {
 
         try {
             const res = await login({ email, password }).unwrap();
-            dispatch(setCredentials({...res}));
+            dispatch(setCredentials({ ...res }));
+
             navigate("/");
         } catch (err) {
             setError(true);

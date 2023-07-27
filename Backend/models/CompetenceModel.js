@@ -6,9 +6,13 @@ const CompetencesSchema = mongoose.Schema(
             type: String,
             required: [true, "please fill the titre"]
         },
-        type_de_savoire: {
+        typeDeSavoire: {
             type: String,
             required: [true, "please choose the a type"]
+        },
+        module_id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "module"
         }
     },
     { strict: false }
