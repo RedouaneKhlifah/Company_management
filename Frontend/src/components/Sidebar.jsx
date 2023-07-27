@@ -1,64 +1,66 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import SidebarButton from "./utils/SideBarButton";
 import SidebarAnepIcon from "./utils/SidebarAnepIcon";
-import { IoIosArrowDropleftCircle } from "react-icons/io";
+import { Icon } from "@iconify/react";
 
 function Sidebar() {
     const [show, setShow] = useState(true);
+    const container = useRef(null);
 
     const handleIconClick = () => {
         setShow(!show);
-        console.log("test");
+
+        if (container.current) {
+            container.current.classList.toggle("w-52");
+            container.current.classList.toggle("w-16");
+        }
     };
     const SidebarButtons = [
-        { link: "accueil", title: "Accueil", imgsrc: "/imgsrc", state: show },
-        { link: "/emplois", title: "Emplois", imgsrc: "/imgsrc", state: show },
+        { link: "/", title: "Accueil", icon: "material-symbols:home", state: show },
+        { link: "/emplois", title: "Emplois", icon: "material-symbols:work", state: show },
         {
-            link: "employee",
+            link: "employees",
             title: "Employées",
-            imgsrc: "/imgsrc",
+            icon: "material-symbols:groups-rounded",
             state: show
         },
         {
-            link: "competence",
+            link: "competences",
             title: "Compétences",
-            imgsrc: "/imgsrc",
+            icon: "material-symbols:assignment-outline",
             state: show
         },
-        { link: "module", title: "Modules", imgsrc: "/imgsrc", state: show }
+        { link: "modules", title: "Modules", icon: "material-symbols:library-books-outline", state: show }
     ];
 
     return (
-        <div className=" relative">
+        <div className="relative transition-all duration-500 drop-shadow-black-sm">
             <div
-                className={`${
-                    show ? "w-11/12" : " w-8/12"
-                } bg-anep-secondary ml-2 mt-2 rounded-lg transition-all duration-500`}
+                ref={container}
+                className="w-52 bg-anep-secondary rounded-lg transition-all duration-500"
             >
                 {/* anep image */}
                 <SidebarAnepIcon state={show} />
 
                 {/* arrow icon */}
-                {
-                    <IoIosArrowDropleftCircle
-                        onClick={handleIconClick}
-                        className={`text-anepBlue text-2xl absolute top-12 ${
-                            show ? "right-0" : "right-4"
-                        } ${
-                            show ? "rotate-0" : "rotate-180"
-                        } transition-all duration-500`}
-                    />
-                }
+                <i
+                    onClick={handleIconClick}
+                    className={`top-10 p-1 text-white text-3xl absolute bg-anep-primary rounded-full cursor-pointer -right-4 ${
+                        show ? "rotate-180" : "rotate-0"
+                    } transition-all duration-500`}
+                >
+                    <Icon icon="material-symbols:arrow-forward-ios-rounded" className="translate-x-0.5" />
+                </i>
 
                 {/* links */}
-                <div className="flex flex-col gap-y-5  py-4">
+                <div className="flex flex-col gap-y-5 py-4">
                     {SidebarButtons.map((btn) => {
                         return (
                             <SidebarButton
                                 key={btn.link}
                                 link={btn.link}
                                 title={btn.title}
-                                imgsrc={btn.imgsrc}
+                                icon={btn.icon}
                                 state={btn.state}
                             />
                         );

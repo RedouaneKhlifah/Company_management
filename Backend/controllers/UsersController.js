@@ -1,6 +1,9 @@
 import asyncHandler from "express-async-handler";
 import User from "../models/UserModel.js";
 import generateToken from "../utilities/GenerateToken.js";
+import generateTempToken from "../utilities/GenerateTempToken.js";
+import jwt from "jsonwebtoken";
+import nodemailer from "nodemailer";
 
 /**
  * @desc Auth user & set token
@@ -18,10 +21,10 @@ export const authUser = asyncHandler(async (req, res) => {
 
     if (user && (await user.matchPassword(password))) {
         generateToken(res, user._id);
-        res.status(200).json({ message: "User logged in." });
+        res.status(200).json({ message: "You have logged in successfully." });
     } else {
         res.status(400);
-        throw new Error("L'email ou le mot de passe est incorrect.");
+        throw new Error("L'e-mail ou le mot de passe est incorrect.");
     }
 });
 
@@ -36,7 +39,133 @@ export const logoutUser = asyncHandler(async (req, res) => {
         expires: new Date(0)
     });
 
-    res.status(200).json({ message: "User logged out." });
+    res.status(200).json({ message: "You have logged out successfully." });
+});
+
+/**
+ * @desc Forgot password
+ * @route POST /api/user/forgot-password
+ * @access public
+ */
+export const forgotPassword = asyncHandler(async (req, res) => {
+    const { email } = req.body;
+    const user = await User.findOne({
+        $or: [
+            { "personalInfo.E-mail personnel": email },
+            { "personalInfo.E-mail professionnel": email }
+        ]
+    });
+
+    if (user) {
+        const port = process.env.PORT;
+        const token = generateTempToken(email, user._id);
+        const link = `${req.protocol}://${req.hostname}${
+            port ? ":" + port : ""
+        }/api/user/reset-password/${email}/${user._id}/${token}`;
+
+        const transporter = nodemailer.createTransport({
+            service: "gmail",
+            auth: {
+                user: "noreply.anep@gmail.com",
+                pass: "iefedokuknbvbzbr"
+            }
+        });
+
+        const mailOptions = {
+            from: "ANEP <noreply.anep@gmail.com>",
+            to: email,
+            subject: "Réinitialisez votre mot de passe sur ANEP.",
+            html: `
+                <p>Bonjour <b>${user.otherInfo.fullName},</b></p>
+                <p>Vous trouverez ci-dessous le lien pour réinitialiser votre mot de passe. Veuillez noter que le lien expirera dans 30 minutes. <b>NE PARTAGEZ PAS LE LIEN AVEC QUICONQUE</b></p>
+                <br>
+                <a href="${link}">Réinitialiser votre mot de passe</a>
+                `
+        };
+
+        transporter.sendMail(mailOptions, function (err, info) {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log("Email sent: " + info.response);
+            }
+        });
+
+        res.status(200).json({ message: "Email envoyé avec succès à votre adresse e-mail. Vérifiez votre boîte de réception." });
+    } else {
+        res.status(400);
+        throw new Error("L'e-mail est incorrect.");
+    }
+});
+
+/**
+ * @desc View to reset password
+ * @route GET /api/user/reset-password/:email/:id/:token
+ * @access public
+ */
+export const resetPasswordView = asyncHandler(async (req, res) => {
+    const { email, id, token } = req.params;
+    const user = await User.findOne({ _id: id });
+
+    if (
+        !user ||
+        (user.personalInfo["E-mail personnel"] !== email &&
+            user.personalInfo["E-mail professionnel"] !== email)
+    ) {
+        return res.render("Error", {
+            message: "Une erreur s'est produite, le lien est invalide."
+        });
+    }
+
+    try {
+        jwt.verify(token, process.env.JWT_SECRET);
+
+        res.render("ResetPassword", { errors: null });
+    } catch (error) {
+        return res.render("Error", {
+            message:
+                "Votre lien est invalide ou a expiré. Veuillez générer un nouveau lien.",
+            error
+        });
+    }
+});
+
+/**
+ * @desc Reseting the password
+ * @route POST /api/user/reset-password/:email/:id/:token
+ * @access public
+ */
+export const resetPassword = asyncHandler(async (req, res) => {
+    const { email, id, token } = req.params;
+    const { password } = req.body;
+    const user = await User.findById(id);
+
+    if (
+        !user ||
+        (user.personalInfo["E-mail personnel"] !== email &&
+            user.personalInfo["E-mail professionnel"] !== email)
+    ) {
+        return res.render("Error", {
+            message: "Une erreur s'est produite, le lien est invalide."
+        });
+    }
+
+    try {
+        jwt.verify(token, process.env.JWT_SECRET);
+
+        user.password = password;
+        await user.save();
+
+        res.render("Success", {
+            message: "Votre mot de passe a été mis à jour avec succès."
+        });
+    } catch (error) {
+        return res.render("Error", {
+            message:
+                "Une erreur s'est produite. Essayez de générer un nouveau lien.",
+            error
+        });
+    }
 });
 
 /**
@@ -193,7 +322,9 @@ export const adminUpdateUser = asyncHandler(async (req, res) => {
             service,
             ...otherProFields
         } = req.body.professionalInfo ?? user.professionalInfo;
-        const skills = req.body.skills ? JSON.parse(req.body.skills) : user.skills;
+        const skills = req.body.skills
+            ? JSON.parse(req.body.skills)
+            : user.skills;
         const jobs = req.body.jobs ? JSON.parse(req.body.jobs) : user.jobs;
         const fullName = name.trim() + " " + familyName.trim();
         const profilePicture = req.file?.path ?? user.otherInfo.profilePicture;
@@ -263,7 +394,9 @@ export const adminDeleteUser = asyncHandler(async (req, res) => {
 
         await User.deleteOne({ _id: req.params.id });
 
-        res.status(200).json({ message: "Le profil de " + fullName + " a été supprimé avec succès." });
+        res.status(200).json({
+            message: "Le profil de " + fullName + " a été supprimé avec succès."
+        });
     } else {
         res.status(404);
         throw new Error("Employé introuvable.");

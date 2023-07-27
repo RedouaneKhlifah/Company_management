@@ -23,53 +23,70 @@ import EmployeDetails, {
     employeDetailsLoader
 } from "./views/children/employees/EmployeDetails.jsx";
 import PageNotFound from "./views/PageNotFound";
+import PrivateRoute from "./components/PrivateRoute.jsx";
 import CompetenceHome from "./views/children/skills/CompetenceHome.jsx";
 import ModuleHome from "./views/children/courses/ModuleHome.jsx";
-
+import EmploiHome from "./views/children/jobs/EmploiHome.jsx";
+import ForgotPassword from "./views/ForgotPassword.jsx";
 // loaders
 import { fetchCompetences } from "./loaders/Competences.js";
 import { fetchModules } from "./loaders/Modules.js";
+// import EmploiDetails, {
+//     emploiDetailsLoader
+// }  from "./views/children/employees/EmploiDetails.jsx";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
         <Route path="/" element={<App />}>
             {/* Routes if user is authentified */}
-            <Route path="" element={<Home />}>
-                <Route index element={<Accueil />} />
+            <Route path="" element={<PrivateRoute />}>
+                <Route path="" element={<Home />}>
+                    <Route index element={<Accueil />} />
 
-                <Route path="jobs" element={<Emploi />}></Route>
+                    <Route path="emplois" element={<Emploi />}>
+                        <Route index element={<EmploiHome />} loader={fetchAllEmplois} />
+                        {/* <Route
+                            path=":id"
+                            element={<EmploiDetails />}
+                            loader={employeDetailsLoader}
+                        /> */}
+                    </Route>
 
-                <Route path="employees" element={<Employe />}>
-                    <Route index element={<EmployeHome />} />
-                    <Route
-                        path=":id"
-                        element={<EmployeDetails />}
-                        loader={employeDetailsLoader}
-                    />
+                    <Route path="employees" element={<Employe />}>
+                        <Route index element={<EmployeHome />} />
+                        <Route
+                            path=":id"
+                            element={<EmployeDetails />}
+                            loader={employeDetailsLoader}
+                        />
+                    </Route>
+
+                    <Route path="competences" element={<Competence />}>
+                        <Route
+                            index
+                            element={<CompetenceHome />}
+                            loader={fetchCompetences}
+                        />
+                    </Route>
+
+                    <Route path="modules" element={<Module />}>
+                        <Route
+                            index
+                            element={<ModuleHome />}
+                            loader={fetchModules}
+                        />
+                    </Route>
                 </Route>
-
-                <Route path="competence" element={<Competence />}>
-                    <Route
-                        index
-                        element={<CompetenceHome />}
-                        loader={fetchCompetences}
-                    />
-                </Route>
-
-                <Route path="module" element={<Module />}>
-                    <Route
-                        index
-                        element={<ModuleHome />}
-                        loader={fetchModules}
-                    />
-                </Route>
+                
+                {/* Route to Page not found */}
+                <Route path="*" element={<PageNotFound />} />
             </Route>
 
             {/* Route to Sign-in page */}
             <Route path="signin" element={<SignIn />} />
 
-            {/* Route to Page not found */}
-            <Route path="*" element={<PageNotFound />} />
+            {/* Route to Forgot password page */}
+            <Route path="forgot-password" element={<ForgotPassword />} />
         </Route>
     )
 );
