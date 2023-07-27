@@ -4,10 +4,19 @@ const ModuleSchema = mongoose.Schema(
     {
         titre: {
             type: String,
-            required: [true, "module error"]
+            required: [true, "module message"]
         },
-        competence: [
-            { type: mongoose.Schema.Types.ObjectId, ref: "competence" }
+        competences: [
+            {
+                titre: {
+                    type: String,
+                    required: true
+                },
+                id: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: "competence"
+                }
+            }
         ]
     },
     { strict: false }

@@ -3,7 +3,8 @@ import {
     fetchCompetenceById,
     createCompetence,
     updateCompetence,
-    deleteCompetence
+    deleteCompetence,
+    autoCompleteCompetence
 } from "../controllers/CompetenceController.js";
 import { Router } from "express";
 
@@ -11,6 +12,10 @@ const router = Router();
 
 // @GET
 router.get("/", fetchCompetences);
+
+// autoCompleteCompetence
+router.get("/autocomplete", autoCompleteCompetence);
+
 router.get("/:id", fetchCompetenceById);
 
 // @POST

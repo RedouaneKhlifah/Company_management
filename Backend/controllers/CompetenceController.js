@@ -1,38 +1,28 @@
 /* eslint-disable camelcase */
 import asynchandler from "express-async-handler";
 import Competence from "../models/CompetenceModel.js";
-import Module from "../models/ModuleModel.js";
 
 // Get all Competences
 const fetchCompetences = asynchandler(async (req, res) => {
-    const competences = await Competence.find();
-    const competencesWithModule = await Promise.all(
-        competences.map(async (competence) => {
-            const module = await Module.findOne({
-                competences: competence._id
-            });
-            return {
-                competence,
-                module: module?.titre
-            };
-        })
-    );
+    const competences = await Competence.find().populate("module_id");
+    res.json({ competences });
 
-    res.json({ competencesWithModule });
+    // // Remove the 'module_id' field from all Competence documents
+    // await Competence.updateMany({}, { $unset: { module_id: 1 } });
 });
 
 // Get specific Competence
 const fetchCompetenceById = asynchandler(async (req, res) => {
     const competenceId = req.params.id;
-    const foundCompetence = await Competence.findById(competenceId);
+    const foundCompetence = await Competence.findById(competenceId).populate(
+        "module_id"
+    );
     if (!foundCompetence) {
         return res.status(400).json({
             message: "Competence not exist"
         });
     }
-
-    const module = await Module.findOne({ competences: competenceId });
-    res.status(200).json({ Competence: foundCompetence, module });
+    res.status(200).json({ Competence: foundCompetence });
 });
 
 // Create a new Competence
@@ -76,7 +66,7 @@ const updateCompetence = asynchandler(async (req, res) => {
 });
 
 // Delete a competence
-const deleteCompetence = asynchandler(async function (req, res) {
+const deleteCompetence = asynchandler(async (req, res) => {
     const competenceId = req.params.id;
     const body = req.body;
     const foundCompetence = await Competence.findById(competenceId);
@@ -96,10 +86,20 @@ const deleteCompetence = asynchandler(async function (req, res) {
     const deletedCompetence = await Competence.findByIdAndDelete(competenceId);
     res.json(`${deletedCompetence.titre} got succufuly Deleted`);
 });
+
+// autoComplete
+const autoCompleteCompetence = asynchandler(async (req, res) => {
+    const CompetencesWithNoModule = await Competence.find({
+        module_id: { $exists: false }
+    });
+    return res.json(CompetencesWithNoModule);
+});
+
 export {
     fetchCompetences,
     fetchCompetenceById,
     createCompetence,
     updateCompetence,
-    deleteCompetence
+    deleteCompetence,
+    autoCompleteCompetence
 };
