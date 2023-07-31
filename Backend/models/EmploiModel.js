@@ -29,7 +29,7 @@ const emploiSchema = mongoose.Schema(
             {
                 competence_id: {
                     type: mongoose.Schema.Types.ObjectId,
-                    ref: "Competence"
+                    ref: "competence"
                 },
                 Niveau: {
                     type: Number,
@@ -43,7 +43,7 @@ const emploiSchema = mongoose.Schema(
                     type: mongoose.Schema.Types.ObjectId,
                     ref: "personne"
                 },
-                timestamp: Date,
+                timestamp: Date
             },
             updatedBy: [
                 {
@@ -51,7 +51,7 @@ const emploiSchema = mongoose.Schema(
                         type: mongoose.Schema.Types.ObjectId,
                         ref: "personne"
                     },
-                    timestamp: Date,
+                    timestamp: Date
                 }
             ]
         }
