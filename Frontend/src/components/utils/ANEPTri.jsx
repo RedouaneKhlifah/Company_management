@@ -3,17 +3,11 @@ import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/solid";
 import classNames from "classnames";
 
-export default function ANEPTri({ onSortOptionChange ,selectedSortOption }) {
-    const sortOptions = [
-        { name: "Titre (asc)", value: "Titre" },
-        { name: "Formation (asc)", value: "Formation" },
-        // { name: 'Formation (desc)', value: 'Formation_desc' },
-        { name: "Spécialité (asc)", value: "Spécialité" }
-        // { name: 'Spécialité (desc)', value: 'Spécialité_desc' },
-    ];
+export default function ANEPTri({ onSortOptionChange ,selectedSortOption, data }) {
+    const sortOptions = data; 
     return (
         <>
-            <div className="col-start-1 row-start-1 py-4 ">
+            
                 <div className="flex justify-end max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <Menu as="div" className="relative inline-block">
                         <div className="flex">
@@ -68,7 +62,6 @@ export default function ANEPTri({ onSortOptionChange ,selectedSortOption }) {
                         </Transition>
                     </Menu>
                 </div>
-            </div>
         </>
     );
 }

@@ -59,7 +59,7 @@ const createEmploi = asyncHandler(async (req, res) => {
 // @route   GET /api/emplois
 // @access  Public
 
-const fetchAllEmplois = async (req, res) => {
+const fetchAllEmplois = asyncHandler(async (req, res) => {
     const page = parseInt(req.query.page) - 1 || 0;
     const search = req.query.search || "";
     const filter = req.query.filter || "";
@@ -93,7 +93,7 @@ const fetchAllEmplois = async (req, res) => {
         .limit(emploisPerPage);
     const rowCount = await Emploi.countDocuments(query);
     res.status(200).json({ emplois, rowCount });
-};
+});
 
 // @desc    Get a single emploi by ID
 // @route   GET /api/emplois/:id
@@ -102,8 +102,10 @@ const fetchAllEmplois = async (req, res) => {
 const fetchSingleEmploi = asyncHandler(async (req, res) => {
     const emploiId = req.params.id;
 
-    const emploi = await Emploi.findById(emploiId);
-
+    const emploi = await Emploi.findById(emploiId).populate({
+        path: "Compétences.competence_id",
+        model: Competence // Reference the 'Competence' model
+    });
     if (!emploi) {
         res.status(404);
         throw new Error("L'emploi spécifié n'a pas été trouvé.");
@@ -121,7 +123,7 @@ const fetchSingleEmploi = asyncHandler(async (req, res) => {
 const updateEmploi = asyncHandler(async (req, res) => {
     const emploiId = req.params.id;
     const updateData = req.body;
-
+    console.log(req);
     const existingEmploi = await Emploi.findById(emploiId);
     if (!existingEmploi) {
         res.status(404);
