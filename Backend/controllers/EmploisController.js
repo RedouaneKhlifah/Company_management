@@ -60,13 +60,40 @@ const createEmploi = asyncHandler(async (req, res) => {
 // @access  Public
 
 const fetchAllEmplois = asyncHandler(async (req, res) => {
-    const { page = 1 } = req.params;
-    const emplois = await Emploi.find()
-        .skip(page * 20)
-        .limit(20);
+    const page = parseInt(req.query.page) - 1 || 0;
+    const search = req.query.search || "";
+    const filter = req.query.filter || "";
+    const groupby = req.query.groupby || "";
+    const sort = req.query.sort || "Titre";
+    const sortOrder = req.query.order === "desc" ? -1 : 1;
+
+    const sortBy = {};
+    sortBy[`info_emploi.${sort}`] = sortOrder;
+
+    const query = {};
+    // If search query is provided, use it for the 'Titre' field
+    if (search) {
+        query["info_emploi.Titre"] = { $regex: search, $options: "i" };
+    }
+    if (filter) {
+        if (
+            groupby === "Formation" ||
+            groupby === "Expérience" ||
+            groupby === "Spécialité"
+        ) {
+            query[`info_emploi.${groupby}`] = { $regex: filter, $options: "i" };
+        }
+    }
+
+    const emploisPerPage = 12;
+    const skip = page * emploisPerPage;
+    const emplois = await Emploi.find(query)
+        .sort(sortBy)
+        .skip(skip)
+        .limit(emploisPerPage);
     const rowCount = await Emploi.countDocuments(query);
     res.status(200).json({ emplois, rowCount });
-    res.status(200).json(emplois);
+
 });
 
 // @desc    Get a single emploi by ID
@@ -76,8 +103,10 @@ const fetchAllEmplois = asyncHandler(async (req, res) => {
 const fetchSingleEmploi = asyncHandler(async (req, res) => {
     const emploiId = req.params.id;
 
-    const emploi = await Emploi.findById(emploiId);
-
+    const emploi = await Emploi.findById(emploiId).populate({
+        path: "Compétences.competence_id",
+        model: Competence // Reference the 'Competence' model
+    });
     if (!emploi) {
         res.status(404);
         throw new Error("L'emploi spécifié n'a pas été trouvé.");
@@ -95,7 +124,7 @@ const fetchSingleEmploi = asyncHandler(async (req, res) => {
 const updateEmploi = asyncHandler(async (req, res) => {
     const emploiId = req.params.id;
     const updateData = req.body;
-
+    console.log(req);
     const existingEmploi = await Emploi.findById(emploiId);
     if (!existingEmploi) {
         res.status(404);

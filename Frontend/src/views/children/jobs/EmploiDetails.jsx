@@ -3,10 +3,6 @@ import PageNotFound from "../../PageNotFound";
 
 function EmploiDetails() {
     const emploiData = useLoaderData();
-    // console.log(emploiData.message);
-    console.log(emploiData);
-
-    // alert(emploiData.message); //TODO add error handling here
 
     const titre = emploiData.info_emploi ? emploiData.info_emploi.Titre : "N/A";
     const Expérience = emploiData.info_emploi
@@ -27,9 +23,47 @@ function EmploiDetails() {
                         Details
                     </h4>
                 </div>
-                <div className=" bg-anep-secondary rounded-xl bottom-5 relative z-10 col-span-6">
-                    <div className="m-10">
+                <div className="p-10 bg-anep-secondary rounded-xl bottom-5 relative z-10 col-span-6">
                         <h5 className="font-bold uppercase text-2xl">
+                            {titre}
+                        </h5>
+                        <div className="border border-blue-500 max-w-sm"></div>
+                        <div className="grid grid-cols-2 gap-3">
+                            <div className="grid grid-cols-1 gap-3">
+                                <div className="flex gap-1">
+                                    <p className="font-bold ">Spécialité: </p>
+                                    {Spécialité}
+                                </div>
+                                <div className="flex gap-1">
+                                    <p className="font-bold">Formation: </p>
+                                    {Formation}
+                                </div>
+                                <div className="flex gap-1">
+                                    <p className="font-bold">Experience: </p>
+                                    {Expérience}
+                                </div>
+                            </div>
+                            <div className="grid grid-cols-1 gap-3">
+                                <div className="font-bold">
+                                    Nombre total de competence
+                                </div>
+                                <div className="font-bold">
+                                    Nombre total de competence
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+
+            <div className="grid grid-cols-5">
+                <div className="col-span-2 m-4 ">
+                    <div className="relative rounded-xl bg-anep-primary col-span-6 z-20 flex justify-start mx-4 ">
+                        <h4 className="text-anep-yellow font-bold m-3 text-lg">
+                            Details
+                        </h4>
+                    </div>
+                    <div className="p-10 bg-anep-secondary rounded-xl bottom-5 relative z-10 col-span-6">
+                        <h5 className="font-bold uppercase text-2xl ">
                             {titre}
                         </h5>
                         <div className="border border-blue-500 max-w-sm"></div>
@@ -59,11 +93,15 @@ function EmploiDetails() {
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div className="grid grid-cols-5">
-                <div className="col-span-2">azertyu</div>
-                <div className="col-span-3">zertyu</div>
+                <div className="col-span-3">
+                    {emploiData.Compétences.map((element)=>(
+                        <div>
+                            {element.competence_id.titre}
+                            <pre> : </pre>
+                            {element.Niveau}
+                        </div>
+                ))}
+                </div>
             </div>
         </>
     );
