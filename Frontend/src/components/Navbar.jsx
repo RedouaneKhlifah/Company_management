@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useLogoutMutation } from "../slices/usersApiSlice";
@@ -9,6 +9,7 @@ import { Menu, Transition } from "@headlessui/react";
 import { toast } from "react-toastify";
 import Breadcrumbs from "./utils/BreadcrumbsFun";
 import Avatar from "./utils/Avatar";
+import { GlobalVariables } from "../App";
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
@@ -20,6 +21,7 @@ const Navbar = () => {
     const location = useLocation();
     const pathArr = location.pathname.replace(/^\/|\/$/g, "").split("/");
     const title = pathArr[pathArr.length - 1];
+    const { backendURL } = useContext(GlobalVariables);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -49,7 +51,7 @@ const Navbar = () => {
     }, [expires, dispatch]);
 
     return (
-        <nav className="rounded-2xl z-30 sticky top-3 bg-anep-primary drop-shadow-black-sm">
+        <header className="rounded-xl sticky top-3 bg-anep-primary drop-shadow-black-sm z-30">
             <div className="flex justify-between">
                 <div className="xl:2xl-max:w-2/3">
                     <Breadcrumbs />
@@ -73,17 +75,17 @@ const Navbar = () => {
                     <li>
                         <Avatar
                             className="w-9 h-9 min-w-[36px] min-h-[36px] md:w-12 md:h-12 md:min-w-[48px] md:min-h-[48px] xl:w-16 xl:h-16 xl:min-w-[64px] xl:min-h-[64px] ring-1 xl:ring-2"
-                            src="https://cdn.discordapp.com/attachments/1093229006402375680/1093517657795477534/117645l.jpg"
+                            src={`${backendURL}${userInfo.otherInfo.profilePicture}`}
                             alt={`Avatar de ${userInfo.otherInfo.fullName}`}
                         />
                     </li>
                     <li className="text-white">
                         <p className="px-2 text-lg font-semibold ">
-                            {userInfo.otherInfo.fullName} Saissi Hassani
+                            {userInfo.otherInfo.fullName}
                         </p>
                         <p className="px-2 text-anep-secondary text-sm font-meduim">
                             {userInfo.personalInfo["Libellé grade"] ??
-                                "Aucun libellé de grade xcsfsfd sdfsfsd"}
+                                "Aucun libellé de grade"}
                         </p>
                     </li>
                     <li>
@@ -178,7 +180,7 @@ const Navbar = () => {
                     </li>
                 </ul>
             </div>
-        </nav>
+        </header>
     );
 };
 

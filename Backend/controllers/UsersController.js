@@ -1,5 +1,6 @@
 import asyncHandler from "express-async-handler";
 import User from "../models/UserModel.js";
+import Emploi from "../models/EmploiModel.js";
 import generateToken from "../utilities/GenerateToken.js";
 import generateTempToken from "../utilities/GenerateTempToken.js";
 import jwt from "jsonwebtoken";
@@ -91,7 +92,10 @@ export const forgotPassword = asyncHandler(async (req, res) => {
             }
         });
 
-        res.status(200).json({ message: "Email envoyé avec succès à votre adresse e-mail. Vérifiez votre boîte de réception." });
+        res.status(200).json({
+            message:
+                "Email envoyé avec succès à votre adresse e-mail. Vérifiez votre boîte de réception."
+        });
     } else {
         res.status(400);
         throw new Error("L'e-mail est incorrect.");
@@ -190,6 +194,91 @@ export const searchForUser = asyncHandler(async (req, res) => {
 
     if (user.length > 0) {
         res.status(200).json(user);
+    } else {
+        res.status(404);
+        throw new Error("Employé introuvable.");
+    }
+});
+
+/**
+ * @desc Get, search, sort, filter and pagination of the users.
+ * @route GET /api/user
+ * @access private (Read-Only Admin and above only)
+ */
+export const fetchUsers = asyncHandler(async (req, res) => {
+    const page = parseInt(req.query.page) - 1 || 0;
+    const limit = parseInt(req.query.limit) || 24;
+    const search = req.query.search || "";
+    const genre = req.query.genre || "All";
+    let sort = req.query.sort || "";
+    let genreBy = [];
+    const sortBy = {};
+
+    genre === "All" ? (genreBy = []) : (genreBy = genre.split(","));
+    sort = sort ? sort.split(",") : [];
+
+    if (sort[1]) {
+        sortBy[sort[0]] = sort[1];
+    } else {
+        sortBy[sort[0]] = "";
+    }
+
+    const users = await User.find({
+        "otherInfo.fullName": { $regex: new RegExp(search, "i") }
+    })
+        .select("-password")
+        .populate({
+            path: "jobs.emploi_id",
+            model: Emploi,
+            match: { "emplois.info_emploi.Titre": { $in: genreBy } }
+        })
+        .sort(sortBy)
+        .skip(page * limit)
+        .limit(limit)
+        .exec();
+
+    // const totalUsers = await User.countDocuments({
+    //     "emploi.info_emploi.Titre": { $in: genreBy },
+    //     "otherInfo.fullName": { $regex: new RegExp(search, "i") }
+    // });
+    const totalUsers = await User.aggregate([
+        {
+            $unwind: "$jobs"
+        },
+        {
+            $lookup: {
+                from: "emplois",
+                localField: "jobs.emploi_id",
+                foreignField: "_id",
+                as: "jobDetails"
+            }
+        },
+        {
+            $unwind: "$jobDetails"
+        },
+        {
+            $match: {
+                "jobDetails.info_emploi.Titre": { $in: genreBy },
+                "otherInfo.fullName": { $regex: new RegExp(search, "i") }
+            }
+        },
+        {
+            $group: {
+                _id: null,
+                count: { $sum: 1 }
+            }
+        }
+    ]).exec();
+    console.log(genreBy);
+
+    if (users) {
+        res.status(200).json({
+            limit,
+            page: page + 1,
+            genre: genreBy,
+            users,
+            totalUsers: totalUsers[0] ? totalUsers[0].count : 0
+        });
     } else {
         res.status(404);
         throw new Error("Employé introuvable.");

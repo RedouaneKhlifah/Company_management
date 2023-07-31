@@ -14,7 +14,7 @@ function AllFilters({ onInputChange, onSortOptionChange , selectedSortOption }) 
     ]
     return (
         <>
-            <div className="flex justify-between items-start m-1.5 rounded-2xl mt-3  bg-anep-secondary">
+            <div className="flex justify-between items-start m-1.5 rounded-lg mt-3 drop-shadow-md bg-anep-secondary">
                 <div className="m-5  ">
                     {/* <input type="text" name="" id="" /> */}
                     {/* <ANEPFilter/> */}

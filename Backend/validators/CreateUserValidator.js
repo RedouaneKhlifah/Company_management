@@ -15,6 +15,7 @@ export const adminCreateUserValidationRules = [
         .notEmpty()
         .withMessage("Ce champ ne peut pas être vide."),
     body("personalInfo.phone")
+        .optional({ checkFalsy: true })
         .isMobilePhone(["ar-MA"])
         .withMessage("Le numéro de téléphone est invalide."),
     body("personalInfo.personalEmail")
@@ -30,9 +31,9 @@ export const adminCreateUserValidationRules = [
     body("professionalInfo.previousExp")
         .isNumeric()
         .withMessage("L'expérience antérieure n'accepte que des chiffres."),
-    body("professionalInfo.anepExp")
+    body("professionalInfo.recDate")
         .isDate()
-        .withMessage("L'expérience à l'ANEP n'accepte qu'une date."),
+        .withMessage("La date de recrutement n'accepte qu'une date."),
     body("skills")
         .optional({ checkFalsy: true })
         .isJSON()

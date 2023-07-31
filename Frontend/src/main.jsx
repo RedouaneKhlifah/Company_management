@@ -53,6 +53,7 @@ const router = createBrowserRouter(
                             loader={fetchAllEmplois}
                         />
                         <Route
+
                             path=":id"
                             element={<EmploieDetails />}
                             loader={fetchEmploi}
