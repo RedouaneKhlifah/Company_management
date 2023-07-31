@@ -32,7 +32,11 @@ import ForgotPassword from "./views/ForgotPassword.jsx";
 // loaders
 import { fetchCompetences } from "./loaders/Competences.js";
 import { fetchModules } from "./loaders/Modules.js";
-import { fetchEmplois } from "./loaders/Emplois.js";
+import { fetchAllEmplois } from "../../Backend/controllers/EmploisController.js";
+import { fetchEmploi } from "./loaders/Emplois.js";
+// import EmploiDetails, {
+//     emploiDetailsLoader
+// }  from "./views/children/employees/EmploiDetails.jsx";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -43,11 +47,15 @@ const router = createBrowserRouter(
                     <Route index element={<Accueil />} />
 
                     <Route path="emplois" element={<Emploi />}>
-                        <Route index element={<EmploiHome />} />
+                        <Route
+                            index
+                            element={<EmploiHome />}
+                            loader={fetchAllEmplois}
+                        />
                         <Route
                             path=":id"
                             element={<EmploieDetails />}
-                            loader={fetchEmplois}
+                            loader={fetchEmploi}
                         />
                     </Route>
 

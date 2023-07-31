@@ -4,7 +4,6 @@ import { useLoaderData } from "react-router-dom";
 
 function ModuleTable() {
     const modules = useLoaderData();
-    console.log(modules);
     return (
         <>
             <div className=" w-full mt-8 flex flex-col">
@@ -37,17 +36,17 @@ function ModuleTable() {
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-gray-200 bg-white">
-                                    {modules.map((module) => {
+                                    {modules.map((module, index) => {
                                         return (
                                             <tr key={module._id}>
                                                 <td className="w-1/12 px-3 py-4 text-sm text-gray-700">
-                                                    1
+                                                    {index + 1}
                                                 </td>
                                                 <td className="w-7/12 py-4  pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 hover:underline cursor-pointer">
                                                     {module.titre}
                                                 </td>
                                                 <td className="w-2/12 px-3 py-4 text-sm text-gray-700">
-                                                    {/* {module?.Competences.length + 1} */}
+                                                    {module?.competences.length}
                                                 </td>
                                                 <td className="w-4/12 px-3 py-4 text-sm text-gray-700">
                                                     <ANEPBtn name={"Explore"} />

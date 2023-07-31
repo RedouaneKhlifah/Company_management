@@ -1,5 +1,5 @@
 import axios from "axios";
-const fetchEmplois = async ({params}) => {
+const fetchEmploi = async ({ params }) => {
     const url = "http://localhost:5000/api/emplois/";
     console.log(params);
     try {
@@ -13,4 +13,4 @@ const fetchEmplois = async ({params}) => {
     }
 };
 
-export { fetchEmplois };
+export { fetchEmploi };

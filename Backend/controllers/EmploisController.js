@@ -93,6 +93,7 @@ const fetchAllEmplois = asyncHandler(async (req, res) => {
         .limit(emploisPerPage);
     const rowCount = await Emploi.countDocuments(query);
     res.status(200).json({ emplois, rowCount });
+
 });
 
 // @desc    Get a single emploi by ID

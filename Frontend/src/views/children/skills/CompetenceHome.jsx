@@ -1,11 +1,13 @@
 import React from "react";
 import CompetanceTable from "../../../components/CompetenceTable";
-import ModuleForm from "../../../components/modals/moduleForm";
+
+import { useState } from "react";
+import ANEPBtn from "../../../components/utils/ANEPBtn";
+import ModalBtn from "../../../components/ModalBtn";
 
 function CompetenceHome() {
     return (
         <div>
-            <ModuleForm />
             <CompetanceTable />
         </div>
     );

@@ -49,7 +49,8 @@ ANEPBtn.propTypes = {
     type: PropTypes.string,
     icon: PropTypes.string,
     className: PropTypes.string,
-    color: PropTypes.oneOf(Object.keys(colorsPreset))
+    color: PropTypes.oneOf(Object.keys(colorsPreset)),
+    onClick: PropTypes.func
 };
 
 export default ANEPBtn;

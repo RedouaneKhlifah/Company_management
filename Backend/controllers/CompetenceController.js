@@ -4,8 +4,28 @@ import Competence from "../models/CompetenceModel.js";
 
 // Get all Competences
 const fetchCompetences = asynchandler(async (req, res) => {
-    const competences = await Competence.find().populate("module_id");
-    res.json({ competences });
+    let { page = 0, filters } = req.params;
+    console.log(filters);
+
+    filters = filters ? (filters = JSON.parse(filters)) : [];
+    // Set filters as an empty array if it's an empty string
+    console.log(filters);
+    // console.log(filters);
+    // const parsedFilters = JSON.parse(filters); // Parse the filters JSON string back to an
+
+    // Build the filter criteria based on the array of filter objects
+    const filterCriteria = {};
+    filters.forEach((filterObj) => {
+        const { field, options } = filterObj;
+        filterCriteria[field] = { $in: options };
+    });
+
+    const competences = await Competence.find(filterCriteria)
+        .skip(page * 20)
+        .limit(20)
+        .populate("module_id");
+    // const rowCount = 180;
+    res.json(competences);
 
     // // Remove the 'module_id' field from all Competence documents
     // await Competence.updateMany({}, { $unset: { module_id: 1 } });

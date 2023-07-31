@@ -11,10 +11,11 @@ import { Router } from "express";
 const router = Router();
 
 // @GET
-router.get("/", fetchCompetences);
+router.get("/autocomplete", autoCompleteCompetence);
+
+router.get("/:page?/:filters?", fetchCompetences);
 
 // autoCompleteCompetence
-router.get("/autocomplete", autoCompleteCompetence);
 
 router.get("/:id", fetchCompetenceById);
 
