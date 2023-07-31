@@ -59,7 +59,8 @@ const emploiSchema = mongoose.Schema(
 
     {
         timestamps: true,
-        strict: false
+        strict: false,
+        strictPopulate: false
     }
 );
 

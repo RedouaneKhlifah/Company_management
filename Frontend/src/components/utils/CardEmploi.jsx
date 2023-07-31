@@ -12,18 +12,16 @@ function CardEmploi({ titre, specialite, exp, id }) {
     return (
         <Card className="mt-6 max-w-96 bg-anep-secondary">
             <CardBody>
-                <Typography color="anep-light" className="font-bold font-cairo">
+                <Typography  className="font-bold font-cairo">
                     {titre}
                 </Typography>
                 <div className="mb-2 flex items-center justify-between">
                     <Typography
-                        color="anep-dark"
                         className="font-semibold font-cairo"
                     >
                         {specialite}
                     </Typography>
                     <Typography
-                        color="anep-primary"
                         className="font-semibold font-cairo mx-4 whitespace-nowrap"
                     >
                         {exp}

@@ -49,7 +49,7 @@ const Navbar = () => {
     }, [expires, dispatch]);
 
     return (
-        <nav className="rounded-2xl sticky top-3 bg-anep-primary drop-shadow-black-sm">
+        <nav className="rounded-2xl z-30 sticky top-3 bg-anep-primary drop-shadow-black-sm">
             <div className="flex justify-between">
                 <div className="xl:2xl-max:w-2/3">
                     <Breadcrumbs />
