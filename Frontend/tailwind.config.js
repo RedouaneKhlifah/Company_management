@@ -31,7 +31,8 @@ export default withMT({
                 "white-custom": ["0 0px 4px rgb(255 255 255)"]
             },
             boxShadow: {
-                "anep-primary-inset": "inset 5px 5px 10px #023149, inset -5px -5px 10px #0471a9"
+                "anep-primary-inset":
+                    "inset 5px 5px 10px #023149, inset -5px -5px 10px #0471a9"
             },
             screens: {
                 "sm-max": { max: "639px" },

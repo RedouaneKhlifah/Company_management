@@ -24,7 +24,7 @@ const fetchModuleById = asynchandler(async (req, res) => {
 // create a new Module
 const createModule = asynchandler(async (req, res) => {
     const { titre, competences, ...otherFields } = req.body;
-    console.log(competences);
+    console.log(req.body);
     if (!titre) {
         return res.status(400).json({ error: "Titre field is required." });
     }

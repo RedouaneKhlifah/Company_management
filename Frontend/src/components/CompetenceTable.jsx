@@ -2,13 +2,27 @@ import { useEffect, useState } from "react";
 import { useLoaderData } from "react-router-dom";
 import axios from "axios";
 import Pagination from "./Pagination";
+import { Paginate } from "./utils/paginate";
+import Filter from "./utils/Filter";
 
 function CompetanceTable() {
-    const payload = useLoaderData();
-    const competences = payload.competences;
+    const competence = useLoaderData();
+
+    const [competences, setcompetences] = useState([]);
+
+    const handlePageChange = (data) => {
+        setcompetences(data);
+    };
+
+    const [selectedFilters, setSelectedFilters] = useState([]);
+
+    const handleSelectedFilters = (selectedFilters) => {
+        setSelectedFilters(selectedFilters);
+    };
 
     return (
         <>
+            <Filter sendDataToParent={handleSelectedFilters} />
             <div className=" w-full mt-8 flex flex-col">
                 <div className="-my-2 -mx-4 overflow-x-auto ">
                     <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
@@ -54,7 +68,11 @@ function CompetanceTable() {
                                 </tbody>
                             </table>
                             <div className="md:px-6 lg:px-8 pt-6 pb-4 border-t-2">
-                                {/* <Pagination /> */}
+                                <Paginate
+                                    url="http://localhost:5000/api/competence"
+                                    filters={selectedFilters}
+                                    sendDataToParent={handlePageChange}
+                                />
                             </div>
                         </div>
                     </div>

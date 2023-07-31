@@ -1,27 +1,33 @@
+import React from "react";
 import { Fragment, useState, useEffect } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import ANEPBtn from "../utils/ANEPBtn";
 import axios from "axios";
-import { Card, Input } from "@material-tailwind/react";
-import { ChipDismissible } from "../utils/ChipDismissible";
+import { Card, Input, input } from "@material-tailwind/react";
+import ChipDismissible from "../utils/ChipDismissible";
 import { toast } from "react-toastify";
-
-function ModuleForm() {
-    // show module
+function Modal({
+    url,
+    Inputes = [],
+    autocompleteInpute,
+    name = "",
+    className,
+    icon
+}) {
+    // show modal
     const [open, setOpen] = useState(false);
     const modal = () => {
         setOpen(!open);
     };
 
-    // all Competence that has no module and  hase'nt been selected
+    // all Competence that has no specific key and  hase'nt been selected
     const [baseCompetence, setBaseCompetence] = useState([]);
-    // autocomplete func
-    const autocompleteCompetence_Url =
-        "http://localhost:5000/api/competence/autocomplete";
 
+    // autocomplete func
+    const autocompleteUrl = "http://localhost:5000/api/competence/autocomplete";
     const CompetenceslessModule = async () => {
         try {
-            const res = await axios.get(autocompleteCompetence_Url);
+            const res = await axios.get(autocompleteUrl);
             const payload = res.data;
             setBaseCompetence(payload);
         } catch (error) {}
@@ -30,20 +36,24 @@ function ModuleForm() {
         CompetenceslessModule();
     }, []);
 
+    const inputes = Inputes;
+
+    // InputesName = ["test", "titre", "red", "te"];
     // Create new module
-    const [titre, setTitre] = useState("");
+    const [inputState, setInputStates] = useState({});
+
+    // const [titre, setTitre] = useState("");
     const [error, setError] = useState(false);
-    const moduleUrl = "http://localhost:5000/api/module";
     const createModule = async () => {
         try {
             const moduledata = {
-                titre,
+                ...inputState,
                 competences: selectedCompetences
             };
 
-            const response = await axios.post(moduleUrl, moduledata);
+            const response = await axios.post(url, moduledata);
             setCompetenceInputeVal("");
-            setTitre("");
+            setInputStates([]);
             setSelectedCompetences([]);
             setOpen(false);
             toast.success("Ajouté avec succès");
@@ -65,10 +75,12 @@ function ModuleForm() {
         setCompetenceInputeVal(value);
     };
 
-    const handleTitrenputeVal = (e) => {
-        const { value } = e.target;
-        setTitre(value);
-        setError(false);
+    const handleInputChange = (event) => {
+        const { name, value } = event.target;
+        setInputStates((prevState) => ({
+            ...prevState,
+            [name]: value
+        }));
     };
 
     // autocompleteCompetence function request
@@ -98,7 +110,7 @@ function ModuleForm() {
     const addCompetence = (competenceTitle, competenceId) => {
         setSelectedCompetences((prevSelectedCompetences) => [
             ...prevSelectedCompetences,
-            { titre: competenceTitle, id: competenceId }
+            { titre: competenceTitle, _id: competenceId }
         ]);
 
         // filter baseCompetence from the new selected competence
@@ -130,12 +142,15 @@ function ModuleForm() {
         );
     };
 
+    console.log(name);
+
     return (
         <>
             <ANEPBtn
-                icon={"ic:baseline-plus"}
-                name="Ajouter un nouveau module"
+                icon={icon}
+                name={name}
                 onClick={modal}
+                className={className}
             />
             <Transition.Root show={open} as={Fragment}>
                 <Dialog
@@ -182,74 +197,102 @@ function ModuleForm() {
                                 {/* the body */}
                                 <div className="sm:p-6 p6">
                                     <div className=" mt-3 text-center sm:mt-5 flex  items-center justify-center  ">
-                                        <div className=" w-[350px] flex flex-col ">
+                                        <div className=" w-[500px] flex flex-col ">
                                             {/* titre inpute */}
-
-                                            <Input
-                                                label="Titre"
-                                                onChange={handleTitrenputeVal}
-                                                name="titre"
-                                                value={titre}
-                                                error={error}
-                                            />
-                                            {error && (
-                                                <p className="text-start text-red-600 text-base md:text-sm font-cairo normal-case pl-2 pt-2">
-                                                    Titre field is required.
-                                                </p>
-                                            )}
-
-                                            {/* competence  */}
-                                            <div className="relative pt-4">
-                                                <Input
-                                                    label="Competnece"
-                                                    onChange={
-                                                        handleCompetenceInputeVal
-                                                    }
-                                                    name="competenceInputeVal"
-                                                    value={competenceInputeVal}
-                                                    autoComplete="off"
-                                                />
-
-                                                {/* autocomplete  */}
-                                                {autocomplete.length > 0 && (
-                                                    <Card className="absolute mt-2 w-full max-h-[150px] overflow-y-auto scrollbar-thin scrollbar-thumb-blue-500 z-50 ">
-                                                        <div className="flex flex-col gap-1 min-w-[240px] p-2 font-sans text-base font-normal text-blue-gray-700">
-                                                            {autocomplete.map(
-                                                                (data) => {
-                                                                    return (
-                                                                        <button
-                                                                            key={
-                                                                                data._id
-                                                                            }
-                                                                            className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-blue-gray-50 hover:bg-opacity-80 focus:bg-blue-gray-50 focus:bg-opacity-80 active:bg-blue-gray-50 active:bg-opacity-80 hover:text-blue-gray-900 focus:text-blue-gray-900 active:text-blue-gray-900 outline-none"
-                                                                            style={{
-                                                                                position:
-                                                                                    "relative",
-                                                                                overflow:
-                                                                                    "hidden"
-                                                                            }}
-                                                                            onClick={() =>
-                                                                                addCompetence(
-                                                                                    data.titre,
-                                                                                    data._id
-                                                                                )
-                                                                            }
-                                                                        >
-                                                                            {
-                                                                                data.titre
-                                                                            }
-                                                                        </button>
-                                                                    );
+                                            <div
+                                                className={`grid ${
+                                                    inputes.length > 1
+                                                        ? "grid-cols-2 gap-4"
+                                                        : ""
+                                                }`}
+                                            >
+                                                {inputes.map((input) => {
+                                                    return (
+                                                        <React.Fragment
+                                                            key={input}
+                                                        >
+                                                            <Input
+                                                                label={input}
+                                                                onChange={
+                                                                    handleInputChange
                                                                 }
+                                                                name={input}
+                                                                value={
+                                                                    inputState[
+                                                                        input
+                                                                    ] || ""
+                                                                }
+                                                                error={error}
+                                                            />
+                                                            {error && (
+                                                                <p className="text-start text-red-600 text-base md:text-sm font-cairo normal-case pl-2 pt-2">
+                                                                    {input}{" "}
+                                                                    field is
+                                                                    required.
+                                                                </p>
                                                             )}
-                                                        </div>
-                                                    </Card>
-                                                )}
+                                                        </React.Fragment>
+                                                    );
+                                                })}
                                             </div>
+                                            {/* competence  */}
+                                            {autocompleteInpute && (
+                                                <div className="relative pt-4">
+                                                    <Input
+                                                        label="Competnece"
+                                                        onChange={
+                                                            handleCompetenceInputeVal
+                                                        }
+                                                        name="competenceInputeVal"
+                                                        value={
+                                                            competenceInputeVal
+                                                        }
+                                                        autoComplete="off"
+                                                    />
+
+                                                    {/* autocomplete  */}
+                                                    {autocomplete.length >
+                                                        0 && (
+                                                        <Card className="absolute mt-2 w-full max-h-[150px] overflow-y-auto scrollbar-thin scrollbar-thumb-blue-500 z-50 ">
+                                                            <div className="flex flex-col gap-1 min-w-[240px] p-2 font-sans text-base font-normal text-blue-gray-700">
+                                                                {autocomplete.map(
+                                                                    (data) => {
+                                                                        return (
+                                                                            <button
+                                                                                key={
+                                                                                    data._id
+                                                                                }
+                                                                                className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-blue-gray-50 hover:bg-opacity-80 focus:bg-blue-gray-50 focus:bg-opacity-80 active:bg-blue-gray-50 active:bg-opacity-80 hover:text-blue-gray-900 focus:text-blue-gray-900 active:text-blue-gray-900 outline-none"
+                                                                                style={{
+                                                                                    position:
+                                                                                        "relative",
+                                                                                    overflow:
+                                                                                        "hidden"
+                                                                                }}
+                                                                                onClick={() =>
+                                                                                    addCompetence(
+                                                                                        data.titre,
+                                                                                        data._id
+                                                                                    )
+                                                                                }
+                                                                            >
+                                                                                {
+                                                                                    data.titre
+                                                                                }
+                                                                            </button>
+                                                                        );
+                                                                    }
+                                                                )}
+                                                            </div>
+                                                        </Card>
+                                                    )}
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
 
                                     {/* the chips competences  */}
+
                                     <div className="pt-6 grid grid-cols-2 gap-3">
                                         {selectedCompetences.map(
                                             (competence) => (
@@ -290,4 +333,4 @@ function ModuleForm() {
     );
 }
 
-export default ModuleForm;
+export default Modal;

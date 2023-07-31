@@ -1,11 +1,12 @@
 import React from "react";
-import { Chip, Button } from "@material-tailwind/react";
+import { Chip } from "@material-tailwind/react";
+import PropTypes from "prop-types";
 
-export function ChipDismissible({ value, id, onclose }) {
+function ChipDismissible({ value, id, onclose }) {
     return (
         <>
             <Chip
-                className=" whitespace-normal truncate text-[8px] "
+                className="py-2 px-3 whitespace-normal truncate text-[10px]"
                 open={true}
                 value={value}
                 onClose={() => onclose(id)}
@@ -13,3 +14,5 @@ export function ChipDismissible({ value, id, onclose }) {
         </>
     );
 }
+
+export default ChipDismissible;
