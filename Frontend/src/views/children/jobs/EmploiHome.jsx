@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import CardEmploi from "../../../components/utils/CardEmploi";
-import AllFilters from "../../../components/AllFilters";
 import Pagination from "../../../components/Pagination";
 
 import NavFilter from "../../../components/NavFilter";
@@ -11,7 +10,6 @@ const sortOptions = [
     { name: "Formation (asc)", value: "Formation" },
     { name: "Spécialité (asc)", value: "Spécialité" }
 ];
-
 
 function EmploiHome() {
     const [obj, setObj] = useState([]);
