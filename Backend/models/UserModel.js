@@ -28,9 +28,21 @@ const userSchema = mongoose.Schema(
                 data: Buffer,
                 contentType: String,
                 type: String,
+            },
+            pwdChanged: {
+                type: Boolean,
+                default: false
             }
         },
         personalInfo: {
+            PPR: {
+                type: String,
+                trim: true,
+            },
+            CIN: {
+                type: String,
+                trim: true,
+            },
             Nom: {
                 type: String,
                 trim: true,
@@ -43,7 +55,8 @@ const userSchema = mongoose.Schema(
             },
             Téléphone: {
                 type: String,
-                trim: true
+                trim: true,
+                default: "0000000000"
             },
             "E-mail personnel": {
                 type: String,
@@ -56,9 +69,40 @@ const userSchema = mongoose.Schema(
                 required: true,
                 trim: true,
                 unique: true
-            }
+            },
+            "Date de naissance": {
+                type: Date,
+                trim: true,
+            },
+            Sexe: { // Masculin, Féminin
+                type: String,
+                trim: true,
+            },
+            "Situation familiale": { // Célibataire, Marié(e), Divorcé(e), Veuf(ve)
+                type: String,
+                trim: true,
+            },
+            Localisation: {
+                type: String,
+                trim: true,
+            },
         },
         professionalInfo: {
+            Grade: {
+                type: String,
+                trim: true,
+                required: true
+            },
+            "Poste de Responsabilité": {
+                type: String,
+                trim: true,
+                required: true
+            },
+            État: {
+                type: String,
+                trim: true,
+                required: true
+            },
             Direction: {
                 type: String,
                 trim: true,
@@ -79,13 +123,17 @@ const userSchema = mongoose.Schema(
                 trim: true,
                 required: true
             },
-            "Expérience antérieure": {
-                type: Number,
+            "Département/Division": {
+                type: String,
+                trim: true
+            },
+            "Date de recrutement": {
+                type: Date,
                 trim: true,
                 required: true
             },
-            "Expérience à l'ANEP": {
-                type: Date,
+            "Expérience antérieure": {
+                type: Number,
                 trim: true,
                 required: true
             },

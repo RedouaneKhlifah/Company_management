@@ -26,6 +26,9 @@ app.use(cors());
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
+// Serving images statically
+app.use("/Backend/storage/avatar", express.static(path.join("Backend", "storage", "avatar")));
+
 // Using the cookie-parser middleware to parse cookies from incoming requests
 app.use(cookieParser());
 

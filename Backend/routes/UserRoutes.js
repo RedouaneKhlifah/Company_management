@@ -7,6 +7,7 @@ import {
     resetPassword,
     getUserProfile,
     searchForUser,
+    fetchUsers,
     adminCreateUser,
     adminUpdateUser,
     adminDeleteUser
@@ -28,6 +29,7 @@ router.post("/forgot-password", forgotPassword);
 router.get("/reset-password/:email/:id/:token", resetPasswordView);
 router.post("/reset-password/:email/:id/:token", resetPasswordValirationRules, resetPassword);
 router.get("/search/:name", protect, searchForUser);
+router.get("/", protect, fetchUsers);
 router.get("/profile", protect, getUserProfile);
 router
     .route("/admin")

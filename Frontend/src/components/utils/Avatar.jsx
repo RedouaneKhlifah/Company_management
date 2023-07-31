@@ -7,16 +7,22 @@ const sizes = {
     md: "w-12 h-12 min-w-[48px] min-h-[48px] ring-1",
     lg: "w-16 h-16 min-w-[64px] min-h-[64px] ring-2",
     xl: "w-20 h-20 min-w-[80px] min-h-[80px] ring-2",
-    xxl: "w-28 h-28 min-w-[112px] min-h-[112px] ring-2"
-}
+    xxl: "w-28 h-28 min-w-[112px] min-h-[112px] ring-2",
+    xxxl: "w-36 h-36 min-w-[144px] min-h-[144px] ring-2"
+};
 
-export default function Avatar({ size = "none", alt = "Avatar", src, className = "" }) {
+export default function Avatar({
+    size = "none",
+    alt = "Avatar",
+    src,
+    className = ""
+}) {
     return (
         <picture>
             <img
                 src={src}
                 alt={alt}
-                className={`${sizes[size]} rounded-full object-cover ring-anep-light drop-shadow-black-sm ${className}`}
+                className={`${sizes[size]} rounded-full object-cover ring-anep-secondary drop-shadow-black-sm ${className}`}
             />
         </picture>
     );
@@ -27,4 +33,4 @@ Avatar.propTypes = {
     src: PropTypes.string.isRequired,
     className: PropTypes.string,
     size: PropTypes.oneOf(Object.keys(sizes))
-}
+};

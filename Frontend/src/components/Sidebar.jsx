@@ -37,7 +37,7 @@ function Sidebar() {
         <div className="transition-all duration-500 drop-shadow-black-sm">
             <div
                 ref={container}
-                className="sticky top-3 w-52 bg-anep-secondary rounded-lg transition-all duration-500"
+                className="sticky top-3 w-52 bg-anep-secondary rounded-xl transition-all duration-500"
             >
                 {/* anep image */}
                 <SidebarAnepIcon state={show} />
