@@ -1,11 +1,8 @@
-import { Fragment, useState } from "react";
-import { Disclosure, Menu, Transition } from "@headlessui/react";
-import { ChevronDownIcon, FilterIcon } from "@heroicons/react/solid";
-import { Input } from "@material-tailwind/react";
+import { Disclosure } from "@headlessui/react";
+import { FilterIcon } from "@heroicons/react/solid";
 import ANEPBtn from "./utils/ANEPBtn";
 import SearchButton from "./utils/SearchButton";
 import Sort from "./utils/Sort";
-import ANEPTri from "./utils/ANEPTri";
 
 const NavFilter = ({
     sendSearchToParent,
@@ -264,7 +261,6 @@ const NavFilter = ({
                     </div>
                 </Disclosure>
             </nav>
-            ;
         </>
     );
 };

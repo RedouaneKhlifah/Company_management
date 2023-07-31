@@ -32,7 +32,6 @@ import ForgotPassword from "./views/ForgotPassword.jsx";
 // loaders
 import { fetchCompetences } from "./loaders/Competences.js";
 import { fetchModules } from "./loaders/Modules.js";
-import { fetchAllEmplois } from "../../Backend/controllers/EmploisController.js";
 import { fetchEmploi } from "./loaders/Emplois.js";
 // import EmploiDetails, {
 //     emploiDetailsLoader
@@ -50,7 +49,6 @@ const router = createBrowserRouter(
                         <Route
                             index
                             element={<EmploiHome />}
-                            loader={fetchAllEmplois}
                         />
                         <Route
 
