@@ -8,6 +8,10 @@ function AllFilters({ onInputChange, onSortOptionChange , selectedSortOption }) 
         const { value } = event.target;
         onInputChange(value); // Call the callback function with the updated input value
     };
+    const arrayOfObjects =[ { name: "Titre (asc)", value: "Titre" },
+    { name: "Formation (asc)", value: "Formation" },
+    { name: "Spécialité (asc)", value: "Spécialité" }
+    ]
     return (
         <>
             <div className="flex justify-between items-start m-1.5 rounded-2xl mt-3  bg-anep-secondary">
@@ -19,6 +23,7 @@ function AllFilters({ onInputChange, onSortOptionChange , selectedSortOption }) 
                         <ANEPTri
                             onSortOptionChange={onSortOptionChange}
                             selectedSortOption={selectedSortOption}
+                            data =  {arrayOfObjects}
                         />
                     </div>
                 </div>

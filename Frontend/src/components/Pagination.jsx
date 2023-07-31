@@ -1,9 +1,50 @@
-import React from "react";
+import React, { useState, useEffect, useContext  } from "react";
+import axios from "axios";
+import { GlobalVariables } from "../App";
 
-function Pagination({ currentPage, totalPageCount, onPageChange }) {
-  const handlePageChange = (page) => {
-    onPageChange(page);
-  };
+function Pagination({ url,setIsLoading,sendDataToParent,search,sort }) {
+    const { backendURL } = useContext(GlobalVariables);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPageCount, setTotalPageCount] = useState([]);
+    const [Search, setSearch] = useState(search); 
+    const [Sort, setSort] = useState(sort); 
+
+    // setSearch(search)
+    
+  
+    const handlePageChange = (page) => {
+      setCurrentPage(page);
+    };
+  
+    
+    
+    const getAllEmploi = async (page) => {
+      setIsLoading(true);
+      try {
+        const response = await axios.get(
+          `${backendURL}${url}?page=${page}&search=${Search}&sort=${Sort}`
+        );
+        const donne = response.data;
+        sendDataToParent(donne.emplois);
+        setTotalPageCount(Math.ceil(donne.rowCount / 12));
+        setIsLoading(false);
+      } catch (err) {
+        console.log(err);
+        setIsLoading(false);
+      }
+    };
+    useEffect(() => {
+        setSearch(search);
+        setSort(sort);
+        setCurrentPage(1)
+      }, [search, sort]);
+
+    useEffect(() => {
+
+      getAllEmploi(currentPage);
+    }, [currentPage,Search,Sort]);
+
+  
 
   const renderPageNumbers = () => {
     const pageNumbers = [];

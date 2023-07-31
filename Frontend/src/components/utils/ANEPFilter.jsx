@@ -36,7 +36,7 @@ export default function ANEPFilter() {
                 className=" z-10  grid items-center"
             >
                 <h2 id="filter-heading" className="sr-only">
-                    Filters
+                    Filtres
                 </h2>
                 <div className="relative col-start-1 row-start-1 py-4">
                     <div className="max-w-7xl mx-auto flex space-x-6 divide-x divide-gray-200 text-sm px-4 sm:px-6 lg:px-8">
@@ -46,7 +46,7 @@ export default function ANEPFilter() {
                                     className="flex-none w-5 h-5 mr-2 text-gray-400 group-hover:text-gray-500"
                                     aria-hidden="true"
                                 />
-                                2 Filters
+                                Filtres
                             </Disclosure.Button>
                         </div>
                         <div className="pl-6">
