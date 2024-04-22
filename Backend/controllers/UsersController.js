@@ -13,12 +13,15 @@ import nodemailer from "nodemailer";
  */
 export const authUser = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
+    console.log(email ,  password)
+
     const user = await User.findOne({
         $or: [
             { "personalInfo.E-mail personnel": email },
             { "personalInfo.E-mail professionnel": email }
         ]
     });
+
 
     if (user && (await user.matchPassword(password))) {
         generateToken(res, user._id);

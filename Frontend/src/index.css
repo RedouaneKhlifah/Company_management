@@ -3,3 +3,27 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.fc-view-harness {
+    z-index: 0;
+}
+
+.fc-view-harness-active {
+    z-index: 0;
+}
+
+/* Optionally, you can include the z-index: 0 property */
+.fc-view-harness {
+    z-index: 0;
+}
+
+.fc-event{
+    cursor: pointer;
+}
+.fc-content {
+    cursor: pointer;
+}
+
+.fc-daygrid-day-frame {
+    cursor: pointer;
+}
