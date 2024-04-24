@@ -24,7 +24,7 @@ function Modal({
     const [baseCompetence, setBaseCompetence] = useState([]);
 
     // autocomplete func
-    const autocompleteUrl = "http://localhost:5000/api/competence/modelessCompetence";
+    const autocompleteUrl = "http://localhost:5000/api/competence/modelessCompetences";
     const CompetenceslessModule = async () => {
         try {
             const res = await axios.get(autocompleteUrl);

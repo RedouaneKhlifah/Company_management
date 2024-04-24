@@ -16,11 +16,28 @@ export const calendarApiSlice = apiSlice.injectEndpoints({
                 url : USER_URL ,
                 method : "GET", 
             })
+        }),
+        updateCalendarDate: builder.mutation({
+            query: (data) => ({
+                url: `${USER_URL}/${data.id}`,
+                method: "PATCH",
+                body: data
+            })
+        }),
+        deleteCalenderDate : builder.mutation({
+            query : (data) => ({
+                url :  `${USER_URL}/${data.id}`,
+                method : "DELETE"
+            })
         })
+        
+
     })
 })
 
 export const {
     useCreateCalendarMutation,
-    useGetCalendarDatesMutation
+    useGetCalendarDatesMutation,
+    useUpdateCalendarDateMutation,
+    useDeleteCalenderDateMutation,
 } = calendarApiSlice

@@ -8,12 +8,23 @@ import ChipDismissible from "../utils/ChipDismissible";
 import { toast } from "react-toastify";
 import InputDate from "../utils/InputDate"
 import { useCreateCalendarMutation } from "../../slices/calendarApiSlice";
+import { useDispatch } from "react-redux";
+import { setcalendarDates } from "../../slices/calendarSlice"; 
+import { useGetCalendarDatesMutation ,useUpdateCalendarDateMutation ,useDeleteCalenderDateMutation } from "../../slices/calendarApiSlice";
+import { renameIdField } from "../../utils/calendarApiMethods";
 
 function ScheduleModel({
     open,setOpen,setForm,form
 }) {
 
-    const [createCalendar ,{ isLoading }] = useCreateCalendarMutation()
+    const dispatch = useDispatch();
+
+    const [createCalendar] = useCreateCalendarMutation()
+    const [updateCalendarDate] = useUpdateCalendarDateMutation()
+
+    const [getCalendarDates] = useGetCalendarDatesMutation();
+
+    const [deleteCalenderDate] = useDeleteCalenderDateMutation()
 
 
     const closeModal = ()=>{
@@ -29,16 +40,44 @@ function ScheduleModel({
         }))
     }
 
+    const fetchCalendarData = async () => {
+        try {
+          const response = await getCalendarDates().unwrap();
+          dispatch(setcalendarDates(renameIdField(response)));
+        } catch (error) {
+          toast.error('An error occurred. Please try to refresh.');
+        }
+      };
+    
+
     const hundelSubmit = async()=>{
         try {
             if(!form.id){
                await createCalendar(form).unwrap()
                setOpen(false)
                toast.success("Calendar date created");
+            }else {
+                await updateCalendarDate(form).unwrap()
+                setOpen(false)
+                toast.success("Calendar date upadted");
             }
-            }catch {
+            fetchCalendarData()
+
+            }catch(error) {
                 toast.error("An error occurred. Please try again.");
             }
+    }
+
+    const handleDelete =  async ()=>{
+        try {
+            await deleteCalenderDate(form).unwrap()
+            fetchCalendarData()
+            setOpen(false)
+            toast.success("Calendar date Deleted");
+            
+        }catch {
+            toast.error("An error occurred. Please try again.");
+        }
     }
 
 
@@ -91,11 +130,12 @@ function ScheduleModel({
                                     <div className="w-10/12 flex flex-col gap-4">
                                         <InputDate  name  = "start" label = "Select a Start Date" handleChange = {handleChange} form = {form}/>
                                         <InputDate  name  = "end" label = "Select a End Date "  handleChange = {handleChange} form = {form}/>
-                                        {/* <Input
-                                            label={"test"}
-                                            name= {"test"}
-                                            value={""}
-                                        /> */}
+                                        <Input
+                                            label="title"
+                                            name = "title"
+                                            onChange={handleChange}
+                                            value  = {form.title}
+                                        />  
                                     </div>
                                 </div>
                                 <div className="sm:p-6 p6">
@@ -106,14 +146,22 @@ function ScheduleModel({
                                             onClick={hundelSubmit}
                                             className=" w-[140px]"
                                         />
+                                        {form.id &&
+                                            <ANEPBtn
+                                            name="Delete"
+                                            onClick={handleDelete}
+                                            className=" w-[140px]"
+                                            color = "red"
+                                        />
+                                        }
 
                                         <ANEPBtn
                                             name="Cancel"
                                             onClick={closeModal}
                                             color="gray"
                                             className=" w-[140px]"
-                                        />
-                                    </div>
+                                        />                                  
+                                        </div>
                                 </div>
                             </div>
                         </Transition.Child>

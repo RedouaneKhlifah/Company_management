@@ -13,7 +13,6 @@ export default function InputDate({name ,label ,handleChange ,form}) {
 
    const handleDateSelect = (selectedDate) => {
     setDate(selectedDate);
-    console,log(selectedDate)
     // Trigger the onChange event manually
     handleChange({ target: { name, value: selectedDate } });
   };

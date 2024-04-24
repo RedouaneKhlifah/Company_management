@@ -18,11 +18,6 @@ const useFetchCalendarData = () => {
   const fetchCalendarData = async () => {
     try {
       const response = await getCalendarDates().unwrap();
-      console.log('response api')
-      console.log(response)
-      console.log('after renameIdField') 
-      console.log(renameIdField(response));
-
       dispatch(setcalendarDates(renameIdField(response)));
     } catch (error) {
       toast.error('An error occurred. Please try to refresh.');

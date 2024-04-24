@@ -4,6 +4,7 @@ import Pagination from "../../../components/Pagination";
 
 import NavFilter from "../../../components/NavFilter";
 import { Icon } from "@iconify/react";
+import CardEmploiSkelton from "../../../skilton/emploi/CardEmploiSkelton";
 
 const sortOptions = [
     { name: "Titre (asc)", value: "Titre" },
@@ -45,17 +46,12 @@ function EmploiHome() {
                     sortOptions={sortOptions}
                 />
                 {isLoading ? ( // Check if the data is still loading
-                    <div className="text-center mt-10 pt-11 flex justify-center ">
-                        <Icon
-                            icon="svg-spinners:ring-resize"
-                            className="m-11 "
-                            width="100"
-                            height="100"
-                            color="#035179"
-                        />{" "}
-                        {/* Display the loading spinner */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-4 lg:gap-6 m-1.5 ">
+{                        Array.from({ length: 12 }, (_, index) => (
+                            <CardEmploiSkelton key={index} />
+                        ))}
                     </div>
-                ) : obj.length === 0 ? ( // Check if the array is empty
+                    ) : obj.length === 0 ? ( // Check if the array is empty
                     <div className="text-center mt-4">
                         <p>No data available.</p>{" "}
                         {/* Display a message for no data */}

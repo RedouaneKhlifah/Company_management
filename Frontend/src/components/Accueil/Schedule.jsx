@@ -11,7 +11,7 @@ import useFetchCalendarData from '../../utils/calendarApiMethods';
 function Schedule({setOpen ,setForm}) {
 
   const {calendarDates} = useSelector((state)=>state.calendar)
-  const {isLoading}= useFetchCalendarData()
+    useFetchCalendarData()
   
   ////  hundel click on calender  ///
 
@@ -43,9 +43,6 @@ function Schedule({setOpen ,setForm}) {
   const handleEventChange = (arg)=>{
     console.log(arg);
   }
-
- 
-   
   
       return (
         <div>

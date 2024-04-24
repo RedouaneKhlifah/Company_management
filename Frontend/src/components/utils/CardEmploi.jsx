@@ -28,6 +28,7 @@ function CardEmploi({ titre, specialite, exp, id }) {
                     </Typography>
                 </div>
             </CardBody>
+            <div className="flex-grow"></div>
             <CardFooter className="pt-0">
                 <Link to={id} className="btn btn-primary">
                     <ANEPBtn name="explore" className="m-auto" />
