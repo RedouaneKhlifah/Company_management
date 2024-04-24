@@ -3,7 +3,7 @@ import { Fragment, useState, useEffect } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import ANEPBtn from "../utils/ANEPBtn";
 import axios from "axios";
-import { Card, Input, input } from "@material-tailwind/react";
+import { Card, Input } from "@material-tailwind/react";
 import ChipDismissible from "../utils/ChipDismissible";
 import { toast } from "react-toastify";
 function Modal({
@@ -24,7 +24,7 @@ function Modal({
     const [baseCompetence, setBaseCompetence] = useState([]);
 
     // autocomplete func
-    const autocompleteUrl = "http://localhost:5000/api/competence/autocomplete";
+    const autocompleteUrl = "http://localhost:5000/api/competence/modelessCompetence";
     const CompetenceslessModule = async () => {
         try {
             const res = await axios.get(autocompleteUrl);

@@ -10,7 +10,7 @@ function SidebarButton({ link, title, icon, state }) {
                         
                         className="h-11 w-full flex flex-row justify-start items-center gap-2"
                     >
-                        <div className={`${state ? "px-2" : "mx-auto"}`}>
+                        <div className={`${state ? "px-2 " : "p-3"}`}>
                             <Icon
                                 icon={icon}
                                 className={`text-2xl ${

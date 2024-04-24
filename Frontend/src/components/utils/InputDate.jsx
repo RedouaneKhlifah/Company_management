@@ -5,28 +5,37 @@ import {
   PopoverHandler,
   PopoverContent,
 } from "@material-tailwind/react";
-import { format } from "date-fns";
 import { DayPicker } from "react-day-picker";
-import { ChevronRightIcon, ChevronLeftIcon } from "@heroicons/react/24/outline";
+import {formatDate} from "../../utils/dateFormator"
  
-export default function InputDate() {
+export default function InputDate({name ,label ,handleChange ,form}) {
   const [date, setDate] = React.useState();
- 
+
+   const handleDateSelect = (selectedDate) => {
+    setDate(selectedDate);
+    console,log(selectedDate)
+    // Trigger the onChange event manually
+    handleChange({ target: { name, value: selectedDate } });
+  };
+  
   return (
-    <div className="p-24">
+    <div className="p-2">
       <Popover placement="bottom">
         <PopoverHandler>
           <Input
-            label="Select a Date"
-            onChange={() => null}
-            value={date ? format(date, "PPP") : ""}
+            label={label}
+            value={formatDate(form[name]) || ""}
+            onChange = {handleChange}
+            name={name}
           />
+
         </PopoverHandler>
-        <PopoverContent>
+        <PopoverContent placement  = "bottom" >
           <DayPicker
             mode="single"
-            selected={date}
-            onSelect={setDate}
+            selected={form[name]}
+            onSelect={handleDateSelect}
+            name ={name}
             showOutsideDays
             className="border-0"
             classNames={{
@@ -51,14 +60,6 @@ export default function InputDate() {
                 "day-outside text-gray-500 opacity-50 aria-selected:bg-gray-500 aria-selected:text-gray-900 aria-selected:bg-opacity-10",
               day_disabled: "text-gray-500 opacity-50",
               day_hidden: "invisible",
-            }}
-            components={{
-              IconLeft: ({ ...props }) => (
-                <ChevronLeftIcon {...props} className="h-4 w-4 stroke-2" />
-              ),
-              IconRight: ({ ...props }) => (
-                <ChevronRightIcon {...props} className="h-4 w-4 stroke-2" />
-              ),
             }}
           />
         </PopoverContent>

@@ -7,13 +7,40 @@ import { Card, Input } from "@material-tailwind/react";
 import ChipDismissible from "../utils/ChipDismissible";
 import { toast } from "react-toastify";
 import InputDate from "../utils/InputDate"
+import { useCreateCalendarMutation } from "../../slices/calendarApiSlice";
+
 function ScheduleModel({
-    open,setOpen
+    open,setOpen,setForm,form
 }) {
+
+    const [createCalendar ,{ isLoading }] = useCreateCalendarMutation()
+
 
     const closeModal = ()=>{
         setOpen(false)
     }
+
+
+    const handleChange = (e)=>{
+        const {name , value} = e.target
+        setForm((prv) =>({
+            ...prv,
+            [name] : value
+        }))
+    }
+
+    const hundelSubmit = async()=>{
+        try {
+            if(!form.id){
+               await createCalendar(form).unwrap()
+               setOpen(false)
+               toast.success("Calendar date created");
+            }
+            }catch {
+                toast.error("An error occurred. Please try again.");
+            }
+    }
+
 
     return (
         <div className="z-50 ">
@@ -62,24 +89,13 @@ function ScheduleModel({
                                 {/* the body */}
                                 <div className="flex justify-center sm:pt-6 pt6  ">
                                     <div className="w-10/12 flex flex-col gap-4">
-                                        <Input
+                                        <InputDate  name  = "start" label = "Select a Start Date" handleChange = {handleChange} form = {form}/>
+                                        <InputDate  name  = "end" label = "Select a End Date "  handleChange = {handleChange} form = {form}/>
+                                        {/* <Input
                                             label={"test"}
                                             name= {"test"}
                                             value={""}
-                                        />
-                                        <Input
-                                            label={"test"}
-                                            name= {"test"}
-                                            value={""}
-                                        />
-                                        <InputDate/>
-
-                                        <Input
-                                            label={"test"}
-                                            name= {"test"}
-                                            value={""}
-                                        />
-                                        
+                                        /> */}
                                     </div>
                                 </div>
                                 <div className="sm:p-6 p6">
@@ -87,7 +103,7 @@ function ScheduleModel({
                                     <div className=" mt-5 sm:mt-6 flex flex-row gap-x-4 justify-center ">
                                         <ANEPBtn
                                             name="Enregistrer"
-                                            onClick={()=>console.log("craete test")}
+                                            onClick={hundelSubmit}
                                             className=" w-[140px]"
                                         />
 

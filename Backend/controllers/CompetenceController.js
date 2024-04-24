@@ -5,11 +5,10 @@ import Competence from "../models/CompetenceModel.js";
 // Get all Competences
 const fetchCompetences = asynchandler(async (req, res) => {
     let { page = 0, filters } = req.params;
-    console.log(filters);
+
 
     filters = filters ? (filters = JSON.parse(filters)) : [];
     // Set filters as an empty array if it's an empty string
-    console.log(filters);
     // console.log(filters);
     // const parsedFilters = JSON.parse(filters); // Parse the filters JSON string back to an
 
@@ -112,6 +111,7 @@ const autoCompleteCompetence = asynchandler(async (req, res) => {
     const CompetencesWithNoModule = await Competence.find({
         module_id: { $exists: false }
     });
+    
     return res.json(CompetencesWithNoModule);
 });
 

@@ -10,6 +10,7 @@ import UserInputField from "./routes/UserInputFieldRoutes.js";
 import EmploiRoutes from "./routes/EmploiRoutes.js";
 import CompetenceRoutes from "./routes/CompetenceRoutes.js";
 import ModuleRoutes from "./routes/ModuleRoutes.js";
+import CalendarRoutes from "./routes/CalendarRoutes.js"
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 
 dotenv.config();
@@ -44,7 +45,7 @@ app.use("/api/user-input-fields", UserInputField);
 app.use("/api/emplois", EmploiRoutes);
 app.use("/api/competence", CompetenceRoutes);
 app.use("/api/module", ModuleRoutes);
-
+app.use("/api/calendar", CalendarRoutes);
 // Middlewares
 app.use(notFound);
 app.use(errorHandler);
