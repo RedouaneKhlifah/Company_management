@@ -6,6 +6,8 @@ import NavFilter from "../../../components/NavFilter";
 import { Icon } from "@iconify/react";
 import CardEmploiSkelton from "../../../skilton/emploi/CardEmploiSkelton";
 
+
+// sort options
 const sortOptions = [
     { name: "Titre (asc)", value: "Titre" },
     { name: "Formation (asc)", value: "Formation" },
@@ -13,53 +15,38 @@ const sortOptions = [
 ];
 
 function EmploiHome() {
-    const [obj, setObj] = useState([]);
+    const [emploisData, setemploisData] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [selectedSearch, setSelectedSearch] = useState("");
-    const [selectedSortOption, setSelectedSortOption] = useState("Titre");
-    const handlePageChange = (newPage) => {
-        setCurrentPage(newPage);
-    };
 
-    const handleDataSort = (optionValue) => {
-        setData({ sort: optionValue, search: data.search });
-    };
-
-    const handleSortOptionChange = (optionValue) => {
-        setSelectedSortOption(optionValue);
-    };
-    const handleDataSearch = (value) => {
-        setSelectedSearch(value);
-    };
-
-    const handleData = (value) => {
-        setObj(value);
-    };
-
+    const [searchSortData , setSearchSortData] = useState({
+        sort : "",
+        search : ""
+    })
+    
     return (
         <>
             <div>
+                <div className="z-50" style={{ zIndex: 100 }}>
                 <NavFilter
-                    sendSearchToParent={handleDataSearch}
-                    sendSortToParent={handleDataSort}
-                    onSortOptionChange={handleSortOptionChange}
-                    sortOptions={sortOptions}
+                    sortOptions = {sortOptions}
+                    sendSortSearchDataToParent={setSearchSortData}
                 />
+                </div>
                 {isLoading ? ( // Check if the data is still loading
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-4 lg:gap-6 m-1.5 ">
-{                        Array.from({ length: 12 }, (_, index) => (
+{                     Array.from({ length: 12 }, (_, index) => (
                             <CardEmploiSkelton key={index} />
                         ))}
                     </div>
-                    ) : obj.length === 0 ? ( // Check if the array is empty
+                    ) : emploisData.length === 0 ? ( // Check if the array is empty
                     <div className="text-center mt-4">
                         <p>No data available.</p>{" "}
                         {/* Display a message for no data */}
                     </div>
                 ) : (
                     <>
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-4 lg:gap-6 m-1.5 ">
-                            {obj.map((element) => (
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-4 lg:gap-6 m-1.5 z-0 " style={{ zIndex: 0 }}>
+                            {emploisData.map((element) => (
                                 <CardEmploi
                                     key={element._id}
                                     titre={element.info_emploi.Titre}
@@ -73,11 +60,9 @@ function EmploiHome() {
                 )}
             </div>
             <Pagination
-                sort={selectedSortOption}
-                search={selectedSearch}
+                searchSortData = {searchSortData}
                 url="api/emplois"
-                sendDataToParent={handleData}
-                currentPage={handlePageChange}
+                sendDataToParent={setemploisData}
                 setIsLoading={setIsLoading}
             />
         </>

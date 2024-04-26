@@ -4,7 +4,6 @@ import { useContext, useState } from "react";
 import { GlobalVariables } from "../../App";
 
 function SearchButton({
-    url = "api/emplois",
     label,
     typeInput,
     size,
@@ -12,11 +11,9 @@ function SearchButton({
     typeButton,
     icon,
     classNameButton,
-    sendSearchToParent // Make sure these props are passed correctly
+    sendSearchToParent
 }) {
-    const { backendURL } = useContext(GlobalVariables);
     const [search, setSearch] = useState("");
-    // const [first, setFirst] = useState(true);
 
     const handleInputChange = (event) => {
         const { value } = event.target;
@@ -27,14 +24,21 @@ function SearchButton({
         sendSearchToParent(search)
     };
 
+    const handleKeyDown = (event) => {     
+        if (event.key === "Enter") {
+            event.preventDefault();
+            sendSearchToParent(search);
+        }
+    };
     return (
         <>
             <Input
                 label={label}
                 type={typeInput}
                 size={size}
-                className={classNameInput}
+                className={ `${classNameInput}`}
                 onChange={handleInputChange}
+                onKeyDown={handleKeyDown}
             />
             <ANEPBtn
                 type={typeButton}

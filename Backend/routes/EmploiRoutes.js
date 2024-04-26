@@ -7,11 +7,13 @@ import {
     deleteEmploi
 } from "../controllers/EmploisController.js";
 import { protect } from "../middleware/authMiddleware.js";
+import { Router } from "express";
 
-const router = express.Router();
+
+const router = Router();
 
 // Create a new Emploi
-router.route("/").post(protect, createEmploi);
+router.route("/" ,protect ,createEmploi);
 
 // Get all Emplois
 router.route("/").get(fetchAllEmplois);

@@ -6,7 +6,6 @@ function BtnSkelton() {
     return (
         <Button
             size="lg"
-            color={'bg-gray-200'}
             className={`bg-gray-200  w-24  `}
         >
         </Button>

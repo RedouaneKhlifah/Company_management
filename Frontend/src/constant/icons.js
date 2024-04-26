@@ -9,5 +9,5 @@ export  const icons =   {
     PersonIcon,
     graphUp,
     check,
-    pieChart
+    pieChart,
 } 

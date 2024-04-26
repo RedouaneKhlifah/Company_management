@@ -42,7 +42,7 @@ app.use(express.urlencoded({ extended: true }));
 // Routes
 app.use("/api/user", UserRoutes);
 app.use("/api/user-input-fields", UserInputField);
-app.use("/api/emplois", EmploiRoutes);
+app.use("/api/emploi", EmploiRoutes);
 app.use("/api/competence", CompetenceRoutes);
 app.use("/api/module", ModuleRoutes);
 app.use("/api/calendar", CalendarRoutes);

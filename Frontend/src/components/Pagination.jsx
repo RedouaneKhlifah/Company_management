@@ -2,14 +2,11 @@ import React, { useState, useEffect, useContext  } from "react";
 import axios from "axios";
 import { GlobalVariables } from "../App";
 
-function Pagination({ url,setIsLoading,sendDataToParent,search,sort }) {
+function Pagination({searchSortData, url ,sendDataToParent ,setIsLoading }) {
     const { backendURL } = useContext(GlobalVariables);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPageCount, setTotalPageCount] = useState([]);
-    const [Search, setSearch] = useState(search); 
-    const [Sort, setSort] = useState(sort); 
 
-    // setSearch(search)
     
   
     const handlePageChange = (page) => {
@@ -18,31 +15,29 @@ function Pagination({ url,setIsLoading,sendDataToParent,search,sort }) {
   
     
     
-    const getAllEmploi = async (page) => {
+    const getData = async (page) => {
       setIsLoading(true);
       try {
         const response = await axios.get(
-          `${backendURL}${url}?page=${page}&search=${Search}&sort=${Sort}`
+          `${backendURL}${url}?page=${page}&search=${searchSortData.search}&sort=${searchSortData.sort}`
         );
-        const donne = response.data;
-        sendDataToParent(donne.emplois);
-        setTotalPageCount(Math.ceil(donne.rowCount / 12));
+        const ResData = response.data;
+        sendDataToParent(ResData.emplois);
+        setTotalPageCount(Math.ceil(ResData.rowCount / 12));
         setIsLoading(false);
       } catch (err) {
-        console.log(err);
         setIsLoading(false);
       }
     };
+
     useEffect(() => {
-        setSearch(search);
-        setSort(sort);
         setCurrentPage(1)
-      }, [search, sort]);
+      }, [searchSortData]);
+
 
     useEffect(() => {
-
-      getAllEmploi(currentPage);
-    }, [currentPage,Search,Sort]);
+      getData(currentPage);
+    }, [currentPage,searchSortData]);
 
   
 
@@ -75,7 +70,7 @@ function Pagination({ url,setIsLoading,sendDataToParent,search,sort }) {
           href="#"
           className={`${
             page === currentPage
-              ? "border-anep-primary text-anep-primary  bg-brown-400"
+              ? "border-anep-primary bg-anep-primary  text-white "
               : "border-gray-500 text-gray-500 hover:text-gray-700 "
           } border rounded-lg p-2 px-4 inline-flex items-center text-sm font-medium`}
           onClick={() => handlePageChange(page)}
@@ -111,23 +106,24 @@ function Pagination({ url,setIsLoading,sendDataToParent,search,sort }) {
     return pageNumbers;
   };
 
+
   return (
     <nav className="m-10 border-gray-200 px-4 flex items-center justify-between sm:px-0">
-      <div className="-mt-px w-0 flex-1 flex">
+      <div className='-mt-px w-0 flex-1 flex'>
         <a
           href="#"
-          className={`${
+          className={`${ 
             currentPage === 1
               ? "border-gray-500 text-gray-500"
               : "border-anep-primary text-anep-primary"
-          } border rounded-lg p-2 inline-flex items-center text-sm font-medium hover:text-gray-700`}
-          onClick={() => handlePageChange(currentPage - 1)}
+          } border rounded-lg p-2 inline-flex items-center text-sm font-medium hover:text-gray-700 ${currentPage === 1 ? 'cursor-not-allowed' : ''}`}
+          onClick={() => currentPage !== 1 && handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}
         >
           Précédent
         </a>
       </div>
-      <div className="hidden md:-mt-px md:flex">
+      <div className="flex gap-5 md:-mt-px md:flex  ">
         {renderPageNumbers()}
       </div>
       <div className="-mt-px w-0 flex-1 flex justify-end">
