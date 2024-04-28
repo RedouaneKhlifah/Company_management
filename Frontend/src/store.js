@@ -8,7 +8,7 @@ const store = configureStore({
     reducer: {
         auth: authReducer,
         calendar : calendarSlice,
-        // competence: competenceSlice,
+        competence: competenceSlice,
         [apiSlice.reducerPath]: apiSlice.reducer
     },
     middleware: (getDefaultMiddleware) =>

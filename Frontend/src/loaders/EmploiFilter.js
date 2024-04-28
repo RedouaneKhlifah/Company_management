@@ -3,7 +3,7 @@ import axios from "axios";
 const fetchFilterEmplois = async () => {
   
     try {
-      const url = "http://localhost:5000/api/emplois";
+      const url = "http://localhost:5000/api/emploi";
     const page = 1;
     console.log("hadi:");
     console.log(page);

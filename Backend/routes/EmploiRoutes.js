@@ -13,18 +13,18 @@ import { Router } from "express";
 const router = Router();
 
 // Create a new Emploi
-router.route("/" ,protect ,createEmploi);
+router.post("/"  ,createEmploi);
 
 // Get all Emplois
-router.route("/").get(fetchAllEmplois);
+router.get("/"  ,fetchAllEmplois);
 
 // Get one Emploi
-router.route("/:id").get(fetchSingleEmploi);
+router.get("/:id"  ,fetchSingleEmploi);
 
 // Update an Emploi by ID
-router.route("/:id").put(protect, updateEmploi);
+router.patch("/:id" , updateEmploi);
 
 // Delete an Emploi by ID
-router.route("/:id").delete(protect, deleteEmploi);
+router.delete("/:id" , deleteEmploi);
 
 export default router;

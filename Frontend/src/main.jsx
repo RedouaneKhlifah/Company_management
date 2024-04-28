@@ -54,8 +54,7 @@ const router = createBrowserRouter(
 
                             path=":id"
                             element={<EmploieDetails />}
-                            loader={fetchEmploi}
-                        />
+                       />
                     </Route>
 
                     <Route path="employees" element={<Employe />}>

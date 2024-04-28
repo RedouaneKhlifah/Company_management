@@ -6,30 +6,35 @@ import axios from "axios";
 import { Card, Input } from "@material-tailwind/react";
 import ChipDismissible from "../utils/ChipDismissible";
 import { toast } from "react-toastify";
+import { useDispatch ,useSelector } from "react-redux";
+import { setModelessCompetences } from "../../slices/competenceSlice";
+import AutocompleteInpute from "../ui/autocompleteInpute";
+
 function Modal({
     url,
-    Inputes = [],
     autocompleteInpute,
+    Inputes,
     name = "",
     className,
     icon
 }) {
+
+    const dispatch  = useDispatch();
+    const modlessCompetence = useSelector((state)=>state.competence.ModelessCompetences);
     // show modal
     const [open, setOpen] = useState(false);
     const modal = () => {
         setOpen(!open);
     };
 
-    // all Competence that has no specific key and  hase'nt been selected
-    const [baseCompetence, setBaseCompetence] = useState([]);
 
-    // autocomplete func
+
+    // get modelsss competence and store it in state redux
     const autocompleteUrl = "http://localhost:5000/api/competence/modelessCompetences";
     const CompetenceslessModule = async () => {
         try {
             const res = await axios.get(autocompleteUrl);
-            const payload = res.data;
-            setBaseCompetence(payload);
+            dispatch(setModelessCompetences(res.data))
         } catch (error) {}
     };
     useEffect(() => {
@@ -38,22 +43,21 @@ function Modal({
 
     const inputes = Inputes;
 
-    // InputesName = ["test", "titre", "red", "te"];
     // Create new module
-    const [inputState, setInputStates] = useState({});
-
-    // const [titre, setTitre] = useState("");
+    const [form, setForm] = useState({});
     const [error, setError] = useState(false);
+
     const createModule = async () => {
         try {
             const moduledata = {
-                ...inputState,
+                ...form,
                 competences: selectedCompetences
             };
 
+            // clean up 
             const response = await axios.post(url, moduledata);
             setCompetenceInputeVal("");
-            setInputStates([]);
+            setForm({});
             setSelectedCompetences([]);
             setOpen(false);
             toast.success("Ajouté avec succès");
@@ -69,15 +73,9 @@ function Modal({
     // inpute value
     const [competenceInputeVal, setCompetenceInputeVal] = useState("");
 
-    // handle change
-    const handleCompetenceInputeVal = (e) => {
-        const { value } = e.target;
-        setCompetenceInputeVal(value);
-    };
-
     const handleInputChange = (event) => {
         const { name, value } = event.target;
-        setInputStates((prevState) => ({
+        setForm((prevState) => ({
             ...prevState,
             [name]: value
         }));
@@ -89,12 +87,12 @@ function Modal({
         let value = competenceInputeVal?.toLowerCase();
         if (value) {
             // filter the payload from already selected Competence
-            const filteredAutocomplete = baseCompetence.filter((Competence) => {
+            const filteredAutocomplete = modlessCompetence.filter((Competence) => {
                 return Competence.titre.toLowerCase().includes(value);
             });
             return setAutocomplete(filteredAutocomplete);
         } else {
-            // If the input value is empty, set the autocomplete to the baseCompetence
+            // If the input value is empty, set the autocomplete to the modlessCompetence
             setAutocomplete([]);
         }
     };
@@ -113,12 +111,12 @@ function Modal({
             { titre: competenceTitle, _id: competenceId }
         ]);
 
-        // filter baseCompetence from the new selected competence
-        const filteredAutocomplete = baseCompetence.filter(
+        // filter modlessCompetence from the new selected competence
+        const filteredAutocomplete = modlessCompetence.filter(
             (competence) => competenceId !== competence._id
         );
 
-        setBaseCompetence(filteredAutocomplete);
+       dispatch(setModelessCompetences(filteredAutocomplete))
 
         // set CompetenceInputeVal to none
         setCompetenceInputeVal("");
@@ -131,8 +129,8 @@ function Modal({
             (competence) => competence.id === competenceId
         );
 
-        // return remove Selected Competence to baseCompetence
-        setBaseCompetence([...baseCompetence, removedCompetence]);
+        // return remove Selected Competence to modlessCompetence
+        dispatch(setModelessCompetences([...modlessCompetence, removedCompetence]))
 
         // filter selected competence from removed Competence
         setSelectedCompetences((prevSelectedCompetences) =>
@@ -142,7 +140,6 @@ function Modal({
         );
     };
 
-    console.log(name);
 
     return (
         <>
@@ -218,7 +215,7 @@ function Modal({
                                                                 }
                                                                 name={input}
                                                                 value={
-                                                                    inputState[
+                                                                    form[
                                                                         input
                                                                     ] || ""
                                                                 }
@@ -235,57 +232,11 @@ function Modal({
                                                     );
                                                 })}
                                             </div>
+                                                
                                             {/* competence  */}
                                             {autocompleteInpute && (
                                                 <div className="relative pt-4">
-                                                    <Input
-                                                        label="Competnece"
-                                                        onChange={
-                                                            handleCompetenceInputeVal
-                                                        }
-                                                        name="competenceInputeVal"
-                                                        value={
-                                                            competenceInputeVal
-                                                        }
-                                                        autoComplete="off"
-                                                    />
-
-                                                    {/* autocomplete  */}
-                                                    {autocomplete.length >
-                                                        0 && (
-                                                        <Card className="absolute mt-2 w-full max-h-[150px] overflow-y-auto scrollbar-thin scrollbar-thumb-blue-500 z-50 ">
-                                                            <div className="flex flex-col gap-1 min-w-[240px] p-2 font-sans text-base font-normal text-blue-gray-700">
-                                                                {autocomplete.map(
-                                                                    (data) => {
-                                                                        return (
-                                                                            <button
-                                                                                key={
-                                                                                    data._id
-                                                                                }
-                                                                                className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-blue-gray-50 hover:bg-opacity-80 focus:bg-blue-gray-50 focus:bg-opacity-80 active:bg-blue-gray-50 active:bg-opacity-80 hover:text-blue-gray-900 focus:text-blue-gray-900 active:text-blue-gray-900 outline-none"
-                                                                                style={{
-                                                                                    position:
-                                                                                        "relative",
-                                                                                    overflow:
-                                                                                        "hidden"
-                                                                                }}
-                                                                                onClick={() =>
-                                                                                    addCompetence(
-                                                                                        data.titre,
-                                                                                        data._id
-                                                                                    )
-                                                                                }
-                                                                            >
-                                                                                {
-                                                                                    data.titre
-                                                                                }
-                                                                            </button>
-                                                                        );
-                                                                    }
-                                                                )}
-                                                            </div>
-                                                        </Card>
-                                                    )}
+                                                <AutocompleteInpute autocomplete = {autocomplete}setCompetenceInputeVal = {setCompetenceInputeVal} competenceInputeVal = {competenceInputeVal} addCompetence = {addCompetence}/>
                                                 </div>
                                             )}
                                         </div>
@@ -307,7 +258,7 @@ function Modal({
                                             )
                                         )}
                                     </div>
-
+                                  
                                     {/* the buttons  */}
                                     <div className=" mt-5 sm:mt-6 flex flex-row gap-x-4 justify-center ">
                                         <ANEPBtn

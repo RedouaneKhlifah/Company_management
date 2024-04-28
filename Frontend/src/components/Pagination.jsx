@@ -1,44 +1,6 @@
 import React, { useState, useEffect, useContext  } from "react";
-import axios from "axios";
-import { GlobalVariables } from "../App";
 
-function Pagination({searchSortData, url ,sendDataToParent ,setIsLoading }) {
-    const { backendURL } = useContext(GlobalVariables);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [totalPageCount, setTotalPageCount] = useState([]);
-
-    
-  
-    const handlePageChange = (page) => {
-      setCurrentPage(page);
-    };
-  
-    
-    
-    const getData = async (page) => {
-      setIsLoading(true);
-      try {
-        const response = await axios.get(
-          `${backendURL}${url}?page=${page}&search=${searchSortData.search}&sort=${searchSortData.sort}`
-        );
-        const ResData = response.data;
-        sendDataToParent(ResData.emplois);
-        setTotalPageCount(Math.ceil(ResData.rowCount / 12));
-        setIsLoading(false);
-      } catch (err) {
-        setIsLoading(false);
-      }
-    };
-
-    useEffect(() => {
-        setCurrentPage(1)
-      }, [searchSortData]);
-
-
-    useEffect(() => {
-      getData(currentPage);
-    }, [currentPage,searchSortData]);
-
+function Pagination({data,currentPage,setCurrentPage ,totalPageCount  }) {
   
 
   const renderPageNumbers = () => {
@@ -73,7 +35,7 @@ function Pagination({searchSortData, url ,sendDataToParent ,setIsLoading }) {
               ? "border-anep-primary bg-anep-primary  text-white "
               : "border-gray-500 text-gray-500 hover:text-gray-700 "
           } border rounded-lg p-2 px-4 inline-flex items-center text-sm font-medium`}
-          onClick={() => handlePageChange(page)}
+          onClick={() => setCurrentPage(page)}
         >
           {page}
         </a>
@@ -117,7 +79,7 @@ function Pagination({searchSortData, url ,sendDataToParent ,setIsLoading }) {
               ? "border-gray-500 text-gray-500"
               : "border-anep-primary text-anep-primary"
           } border rounded-lg p-2 inline-flex items-center text-sm font-medium hover:text-gray-700 ${currentPage === 1 ? 'cursor-not-allowed' : ''}`}
-          onClick={() => currentPage !== 1 && handlePageChange(currentPage - 1)}
+          onClick={() => currentPage !== 1 && setCurrentPage(currentPage - 1)}
           disabled={currentPage === 1}
         >
           Précédent
@@ -134,7 +96,7 @@ function Pagination({searchSortData, url ,sendDataToParent ,setIsLoading }) {
               ? "border-gray-500 text-gray-500"
               : "border-anep-primary text-anep-primary"
           } border rounded-lg p-2 inline-flex items-center text-sm font-medium hover:text-gray-700`}
-          onClick={() => handlePageChange(currentPage + 1)}
+          onClick={() => setCurrentPage(currentPage + 1)}
           disabled={currentPage === totalPageCount}
         >
           Suivant

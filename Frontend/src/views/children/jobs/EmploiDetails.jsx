@@ -1,8 +1,27 @@
-import { redirect, useLoaderData } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import PageNotFound from "../../PageNotFound";
+import { useState, useEffect } from "react";
+import  axios  from "axios";
 
 function EmploiDetails() {
-    const emploiData = useLoaderData();
+    const [emploiData, setEmploiData] = useState([])
+
+    const { id } = useParams(); 
+    const fetchEmploi = async () => {
+        const url = "http://localhost:5000/api/emploi/";
+        try {
+            const response = await axios.get(url + id);
+            const datas = response.data;
+            setEmploiData(datas)
+        } catch (error) {
+            console.log(error);
+            return error;
+        }
+    };
+
+    useEffect(()=>{
+        fetchEmploi()
+    },[])
 
     const titre = emploiData.info_emploi ? emploiData.info_emploi.Titre : "N/A";
     const Expérience = emploiData.info_emploi
@@ -94,7 +113,7 @@ function EmploiDetails() {
                     </div>
                 </div>
                 <div className="col-span-3">
-                    {emploiData.Compétences.map((element)=>(
+                    {emploiData.Compétences && emploiData.Compétences.map((element)=>(
                         <div>
                             {element.competence_id.titre}
                             <pre> : </pre>

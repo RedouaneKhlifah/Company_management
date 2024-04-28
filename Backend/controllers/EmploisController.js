@@ -1,6 +1,7 @@
 import asyncHandler from "express-async-handler";
 import Emploi from "../models/EmploiModel.js";
 import Competence from "../models/CompetenceModel.js";
+import User from "../models/UserModel.js";
 
 // @desc    Create a new emploi
 // @route   POST /api/emplois
@@ -82,7 +83,7 @@ const fetchAllEmplois = asyncHandler(async (req, res) => {
         .skip(skip)
         .limit(emploisPerPage);
     const rowCount = await Emploi.countDocuments(query);
-    res.status(200).json({ emplois, rowCount });
+    res.status(200).json({ data : emplois, rowCount });
 });
 
 // @desc    Get a single emploi by ID
@@ -91,19 +92,24 @@ const fetchAllEmplois = asyncHandler(async (req, res) => {
 
 const fetchSingleEmploi = asyncHandler(async (req, res) => {
     const emploiId = req.params.id;
-    console.log(emploiId);
     const emploi = await Emploi.findById(emploiId).populate({
         path: "Compétences.competence_id",
-        model: Competence // Reference the 'Competence' model
+        model: Competence,
+    }).populate({
+        path: "history.createdBy.user_id",
+        model: User,
+    }).populate({
+        path: "history.updatedBy.user_id",
+        model: User,
     });
+    
+    
     if (!emploi) {
         res.status(404);
         throw new Error("L'emploi spécifié n'a pas été trouvé.");
     }
 
-    res.status(200).json({
-        emploi
-    });
+    res.status(200).json(emploi);
 });
 
 // @desc    Update an emploi by ID
